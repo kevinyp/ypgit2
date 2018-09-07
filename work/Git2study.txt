@@ -1,0 +1,271 @@
+完全学会Git的24课堂
+1、初始化文档库
+cd /d/exergit/
+git init
+
+2、配置相关信息
+git config -l
+git config --lis      ---查看所有配置
+git config --system -l
+git config  --global -l
+git config user.name 'yipeng'
+git config user.email 'yipengchen1@163.com'
+git config --system user.name 'yipeng'
+git config --unsert user.name
+git config alias.con 'config -l'   表示config -l 的别名是con
+git config --global core.editor notepad   
+
+--global 表示home directory中的.gitconfig配置文件
+--system 表示git程序文件夹中的etc\config配置文件
+不带参数表示当前工作目录中的配置文件
+
+3、提交文件
+git add 1.txt
+git status  --- 查看状态
+git commit -m '描述、说明信息'  --author='操作者名  <Email邮箱>'
+git commit --amend  -m '新的描述'    ---commit指令后修改描述
+
+git add .   --会把新增的文件和被修改的文件加入Git 索引，被删除的文件不会记录在Git中。
+git add -u   把被修改的文件和被删除的文件加入Git索引。
+git add -A  把新增的文件、被修改的文件以及被删除的文件全部加入Git索引。
+
+4、图形界面
+gitk
+gitk all
+
+5、建立分支
+git branch  分支名  
+git checkout 分支名    --- 切换分支
+git checkout -b newbranchname     --创建一个新分支并切换到新分支
+
+合并新分支后并删除新分支
+git checkout dev
+git merge --no-ff newbranchname
+git branch -d newbranchname
+
+强制删除新分支
+git checkout dev
+git branch -D newbranchname
+
+排除不需要加入的文档库
+touch .gitignore
+在其中加入
+.gitignore
+folder
+
+
+
+
+网上学习
+
+安装
+安装完后设置用户及邮箱
+git config --global user.name 'yipeng'
+git config --global user.email 'yipengchen1@163.com'
+
+创建版本库
+mkdir learngit
+cd learngit
+pwd
+git init
+ls -ah
+
+文件添加到版本库(提交新文件)
+git add 1.txt
+git commit -m 'shuoming xinxi'
+
+查看状态
+git status
+
+查看文件变化
+git diff 1.txt   
+
+查看历史记录
+git log
+
+回退
+HEAD表示当前版本，上一个版本HEAD^ 上上一个版本HEAD^^
+上4个版本HEAD~4
+git reset --hard HEAD^    ---- 回退到上一个版本 
+
+回退后反悔，又回到之前没有回退时
+git reset --hard 58abdbe    --(58abdbe 之前的版本号)
+git reflog用来记录你的每一次命令，可以找到版本号
+
+总结：
+HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，
+使用命令git reset --hard commit_id。
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+用git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
+
+git checkout -- file    可以丢弃工作区的修改：
+git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令
+用命令git reset HEAD <file>可以把暂存区的修改撤销掉（unstage），重新放回工作区
+git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+
+删除文件
+实际删除文件： rm 3.txt
+版本库中再做删除操作
+git rm 3.txt
+git commit -m 'shuoming'
+
+把误删除的找回
+git checkout -- 3.txt
+
+如果也从版本库中删除了，需要找回
+git reset --hard HEAD^
+
+
+
+远程库操作
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+用命令git clone克隆一个本地库
+git clone git@github.com:kevinyp/ypgit2
+
+创建分支
+git checkout -b branch1    
+git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+git branch branch1
+git checkout branch1
+
+用git branch命令查看当前分支：
+
+git merge命令用于合并指定分支到当前分支  
+把dev分支的工作成果合并到master分支上：
+git merge dev
+
+rebase 和merge一样可以合并文件，不过它会消除分支
+git checkout dev
+git rebase master  --- dev原来的分支节点消失，从master新的节点长出分支，最终只存在
+一条主线。 
+
+删除dev分支
+git branch -d dev
+
+小结
+Git鼓励大量使用分支：
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+
+
+git status也可以告诉我们冲突的文件：
+Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容
+当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，再提交。
+用git log --graph命令可以看到分支合并图。
+用git log看看分支历史
+
+合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+准备合并dev分支，请注意--no-ff参数，表示禁用Fast forward
+git merge --no-ff -m 'merge with no-ff' dev
+
+分支策略
+在实际开发中，我们应该按照几个基本原则进行分支管理：
+首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
+那在哪干活呢？干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；
+你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了
+
+Git分支十分强大，在团队开发中应该充分应用。
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，
+而fast forward合并就看不出来曾经做过合并。
+
+Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+用git stash list命令查看“储藏”的工作现场。
+需要恢复一下，有两个办法：
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+
+可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+git stash apply stash@{0}
+
+如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+
+查看远程分支
+git remote  或者，用git remote -v显示更详细的信息：
+
+推送分支
+git push origin master
+git push origin dev
+
+使用强制push的方法：
+$ git push -u origin master -f 
+
+我们可以删除已有的GitHub远程库：
+git remote rm origin
+
+让Git显示颜色，会让命令输出看起来更醒目
+git config --global color.ui true
+
+设置别名
+$ git config --global alias.st status
+$ git config --global alias.co checkout
+$ git config --global alias.ci commit
+$ git config --global alias.br branch
+
+github上的文件和本地不一致的解决方法：  我的步骤通常是这样
+git push    如果失败的话，说明网络上的版本已经更改过了，那就
+git pull     如果失败的话，说明网络的版本和本地的版本在合并时可能产生冲突，那就
+git stash(把本地的修改全部缓存起来)    然后再   git pull
+然后再   git stash pop(把缓存起来的修改恢复)
+然后如果有冲突解决冲突，没有就   git push
+
+在github上只能删除仓库,却无法删除文件夹或文件, 所以只能通过命令来解决
+首先进入你的master文件夹下, Git Bash Here ,打开命令窗口
+$ git --help                                      # 帮助命令
+$ git pull origin master                    # 将远程仓库里面的项目拉下来
+$ dir                                                # 查看有哪些文件夹
+$ git rm -r --cached target              # 删除target文件夹
+$ git commit -m '删除了target'        # 提交,添加操作说明
+$ git push -u origin master               # 将本次更改更新到github项目上去
+
+
+windows 下git服务器安装(Gitblit)
+
+1、下载Gitblit，下载地址：http://www.gitblit.com/
+2、解压缩下载的压缩包即可，无需安装。我的路径为E:\Program Files\gitblit-1.8.0
+3、配置gitblit的 defaults.properties
+    打开defaults.properties分别搜索替换以下信息(参数说明)：
+    server.httpPort = 8888    （http协议的端口 ，请改为自己的端口）
+    server.httpsPort = 8443  （https 协议的端口 ，请改为自己的端口）
+    server.httpBindInterface = localhost（http协议下服务器端访问的网址 ip，请改为自己的ip）
+    server.httpsBindInterface = localhost（https协议下服务器端访问的网址 ip，请改为自己的ip）
+    git.repositoriesFolder = ${baseFolder}/git （${baseFolder}/git是其默认目录，也可以替换为自己指定的文件目录）
+4、修改installService.cmd找到installService.cmd文件。用“记事本”打开。修改ARCH，32位系统：SET ARCH=x86；64位系 统：SET ARCH=amd64。添加CD为程序目录 SET CD=D:\Git\Gitblit-1.6.0(你的实际目录)。修改StartParams里的启动参数，给空就可以了。
+实际要用SET ARCH=x86   设为amd64服务会有问题！！！
+5、右键以管理员身份运行installService.cmd 。 
+6、在浏览器中打开http://localhost:8888/，成功登陆Gitblit服务器
+默认管理员账号密码是admin admin，可以使用默认账号密码登录，然后改密即可。
+
+浏览器访问远程库地址：  http://172.168.1.237:8888/repositories/TestGitblit
+
+git remote add origin http://admin@172.168.1.237:8888/r/TestGitblit.git   --建立远程库到本地库的关联
+git push -u origin master     --将本地文档推送到远程库
+
+
+
+
+
+
+
+
+
+
+
+
+
+
