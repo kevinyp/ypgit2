@@ -1951,7 +1951,10 @@ git remote add origin http://admin@172.168.1.237:8888/r/TestGitblit.git   --建立
 git push -u origin master     --将本地文档推送到远程库
 
 
-
+-- good git websit
+https://www.jianshu.com/p/c8cf9a9b0270
+http://git.oschina.net/progit/
+https://gitee.com/kevinyp001/events
 《Git 学习指南》
 Git内容总结
 帮助：git commit -h    --查看commit命令的帮助
