@@ -2077,7 +2077,10 @@ git config --global user.name "xujun"
 git config --global user.email “gdutxiaoxu@163.com"
 3) 位于 git 目录的 config 文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。
 
-
+删除远端服务器上文件，保留本地文件
+git rm -r --cached some-directory
+git commit -m 'Remove the now ignored directory "some-directory"'
+git push origin master
 
 
 
