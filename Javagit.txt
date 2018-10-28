@@ -1,0 +1,2198 @@
+
+JDK 环境变量(假设jdk安装路径为c:\j2sdk1.6.0)
+Path 最前面加入 c:\j2sdk1.6.0\bin
+Classpath，输入  .;c:\j2sdk1.6.0\lib\dt.jar;j2sdk1.6.0\lib\tools.jar
+JAVA_HOME=c:\j2sdk1.6.0
+
+配置Java环境变量.
+右键”计算机” => ”属性” => ”高级系统设置” => ”高级” => “环境变量” => “系统变量”。
+1.新建：
+变量名：JAVA_HOME   变量值：D:\Program Files (x86)\Java\jdk1.6.0_21
+
+2.  新建：
+变量名：CLASSPATH    变量值：.;%JAVA_HOME%/lib/dt.jar;%JAVA_HOME%/lib/tools.jar
+
+3.　添加：找到PATH变量，选择编辑。把%JAVA_HOME%/bin;%JAVA_HOME%/jre/bin添加到”变量值”的结尾处。
+
+
+Tomcat环境变量
+JAVA_HOME： 对应java安装目录
+CATALINA_HOME(TOMCAT_HOME)：对应Tomcat安装目录
+
+JavaTools
+ctrl+ shift + T 
+
+Java 基础知识点：
+数组和字符串处理
+泛型
+集合框架
+IO流框架
+
+
+泛型：
+把形如 LinkedList<Iteger> list = new LinkedList<Iteger>(); 的声明称为参数化类型。也即泛型。
+
+不用泛型
+void printList(){
+  Iterator listIterator = listOfFamousQuotes.iterator();
+  while(listIterator.hasNext()){
+    String quote=(String) listIterator.next();
+    System.out.println(quote);
+  }
+}
+使用泛型
+void printCheckList(){
+  Iterator<String> quoteIterator = listOfFamousQuotes.iterator();
+  while(quoteIterator.hasNext()){
+    String quote = quoteIterator.next();
+    System.out.println(quote);
+  }
+}
+
+
+泛型类
+class Stack<T>{
+  protected T[] stack = (T[]) new object[100];
+  int ptr = -1;
+  void push(T data){
+    ptr++;
+    stack[ptr] = data;
+  }
+  T pop(){
+    return(T) stack[ptr--];
+  }
+}
+限定类型
+class NumberStack<T extends Number>
+
+import java.util.*;
+public class PlaneMap{
+    public static void 
+}
+
+
+Java的集合框架
+集合框架提供了一套标准接口，所有的类都符合通用的应用程序接口。引入了迭代器，允许对元素操作，用于迭代元素。
+提供了名为Collecitons的静态类，它提供了现有集合的只读和同步版本。
+集合的层次结构提供了不同类型的数据结构如list，set，queue，map。层次结构提供了两颗树：
+Iterable树（list，set，queue）和另一颗树（map），还提供了一个标记接口：RandomAccess接口，表示List的实现类
+支持快速随机访问。
+List：可包含重复元素的有序集合。
+Set：不能包含重复元素的集合，它是数学中抽象集合的模型。
+Queue：提供了顺序访问（先进先出，或后进先出）
+Map：提供键/值对的集合。
+
+接口：
+Iterable-collection-List
+                   -set-SortedSet-NavigableSet
+                   -Queue-Deque
+Map-SortedMap-NavigableMap
+Iterator-ListIterator
+RandomAccess
+
+四棵树：
+Iterable(list,set,queue), 
+Map 键值对的集合,
+Iterator(用于迭代集合元素), 
+RandomAccess(标记接口表示支持快速随机访问)
+
+
+各种实现类
+AbstractCollection
+    AbstractList  - LinkedList, ArrayList,(Stack, Vector)
+    AbstractSet   - HashSet, TreeSet
+    AbstractQueue - PriorityQueue, ArrayDeque
+AbstractMap       - HashMap, TreeMap
+
+
+Java注解
+java注解是java语言的一种机制，允许开发人员向代码的不同部分附加信息。它不是代码的一部分，不会修改代码
+的运行时的行为，也不会修改代码的语义。它能够指出方法是否依赖于其他方法，方法是否完整，类是否引用了
+其它类等。主要供工具供应商或容器类环境使用。
+
+自定义注解：
+注解可以自己创建，它是annotation类型。分为三类：没有任何元素的注解，有一个元素的注解和有多个元素的注解。
+1.Marker注解
+public @interface WorkInProgress{}  此注解告诉其他开发人员，被注解的方法尚未实现。
+2.单值注解
+@interface Task{String value();}
+使用： @Task("Implement tax computations")
+如果不用value这个单词，则:
+@interfae Task{String description();}
+@Tast(description="Implement tax computations")
+3.多值注解
+@interfae Task{
+String description();
+String targeDate() default "Jan 1,2012"; --设置默认值
+int estimatedHoure();
+}
+@Task(
+description="Implement tax computations",
+targeDate="12-1-2016"
+estimatedHoure=50
+)
+
+为注解添加注解(元注解)
+Java语言定义了4种注解类型：Target, Retention, Documentation, Inherited
+1.Target注解用于指定代码中哪些元素可以使用已定义类型的注解。
+@Target(ElementType.METHOD)
+@interface Task{
+   String description()；
+}
+现在，Task注解只能应用于方法。
+ElementType.METHOD, TYPE,FIELD,PARAMETER,CONSTRUCTOR,LOCAL_VARIABLE,ANNOTATION_TYPE
+
+2.Retention注解用于设置注解的可见性(分三个级别：编译器可见，工具可见和运行时可见)。
+@Retention(RetentionPolicy.RUNTIME)
+@interface Task{
+   String description()；
+}
+三个枚举常量：RetentionPolicy.SOURCE，RetentionPolicy.CLASS，RetentionPolicy.RUNTIME
+
+3.Documentation注解表示了javadoc工具应该为带这种类型的注解生成文档。
+
+4.Inherited注解表示子类会继承超类的注解。 
+
+
+
+Struts2框架核心内容
+1.配置文件。web.xml, struts.xml，struts-default.xml,struts.properties
+2.控制器。 业务Action，FilterDispatcher通过配置文件struts.xml--->拦截器--->校验等功能。
+3.标签库。
+4.数据校验，类型转换，文件上传下载，国际化。
+处理流程：配置文件读取-->请求-->FilterDispatcher-->拦截器-->类型转换-->数据验证-->业务Action-->返回结果
+
+struts2应用开发步骤：
+1.在web.xml文件中定义核心Filter来拦截用户请求。
+2.如果需要以POST方式提交数据，则定义包含表单数据的JSP页面。
+3.定义处理用户请求的Action类。底层Filter会根据配置文件进行相关处理，自动创建Action实例，封装参数等。
+4.配置Action。
+5.配置处理结果和物理视图资源之间的关系。
+6.编写视图资源。
+
+一：配置文件(下述文件位置需要配置时查资料)
+web.xml：服务器配置文件，定义框架用到的核心控制器。
+struts.xml：配置了拦截器，Action和请求之间的对应关系，返回页面等，它包含了struts2的全部配置元素，是框架的核心。
+struts-default.xml：框架默认加载的配置文件，定义了核心的bean和拦截器。
+struts.properties：定义一些资源属性。
+struts两个核心配置文件：struts.xml负责管理应用中的Action映射，struts.properties定义了框架的常量。
+
+二：控制器
+框架核心控制器应用时配置。业务Action需自己写。
+Struts2的Action无需继承任何基类，通常包含一个无参execute方法。用于默认处理用户请求。
+Struts2直接使用Action来封装Http请求参数，因此，Action类里应包含与请求参数对应的属性，并提供getter，setter方法。
+Action中封装的属性可以用标签<s:property../>控制输出。可以包含类，数组，集合，Map等复杂属性。
+Action类不再与ServerletAPI耦合，但web应用需要访问serverlet API(HttpServerletRequest,HttpSession,ServerletContext)三个接口，struts2提供了一个ActionContext类。
+Action处理完用户请求后将返回一个普通字符串，它就是一个逻辑视图名。struts2通过配置逻辑视图名与物理视图之间的映射
+关系，就会把物理视图呈现给浏览者。这样的设计有利于Action类和struts2框架分离。这个映射配置在struts.xml文件配置。
+excution方法可以抛出全部异常给struts2框架处理。框架将根据struts.xml文件配置的异常映射转入指定的视图资源。
+开启一场映射功能需要一个拦截器，在struts-default.xml中配置。
+
+三：标签库
+struts2标签库的标签不依赖于任何表现层技术。包括可以在JSP页面，FreeMarker中使用。虽然不像struts1那样对标签库
+进行严格分类，但大致可将标签分为三类。且所有标签都定义在一个s标签库里。
+UI标签：主要用于生成HTML元素。又可分为表单标签和非表单标签如页面上的树，Tab页等。
+非UI标签：主要用于数据访问，逻辑控制等。流程控制标签，数据访问标签。
+Ajax标签：用于Ajax支持。
+导入struts2标签库 <%@taglib prefix="s" uri="/struts-tag" %>
+
+四：国际化支持
+加载全局的国际化资源文件的方式通过配置常量来实现。在struts.xml和struts.properties文件中都可以。只需要
+配置struts.custom.i18n.resources常量即可。
+
+Struts2的拦截器机制
+拦截器是Struts2框架的灵魂，它完成了框架的绝大部分功能，属于系统控制器。可以把struts2理解为一个空容器，而大量
+拦截器完成了改框架的大部分操作，比如，params拦截器负责解析HTTP请求参数，serverlet-config拦截器直接将http请求
+中的HttpServletRequest实例和HttpServletResponse实例传给Action，fileUpload拦截器负责解析请求参数中的文件域。
+还有类型转换器，conversionError拦截器，校验器，文件过滤器（文件上传的拦截器是fileUpload），日志记录器等。
+struts2的拦截器是可插拔式设计，需要某个拦截器只需要在配置文件中应用该拦截器即可。拦截器由struts-default.xml
+struts.xml等配置文件管理。
+配置拦截器在struts.xml中 
+<interceptor name="拦截器名"  class="拦截器实现类" >
+	<param name="参数名">参数值</param>
+</interceptor>
+也可把拦截器连在一起组成拦截器栈。拦截器行为将会在Action的execute方法执行之前被执行。
+
+
+
+
+Struts2安装
+1，下载相关库文件，将struts-2.0.11.1的lib文件夹下的common-logging-1.0.4.jar,freemarker-2.3.8.jar,
+struts2-core-2.0.11.1.jar, xwork-2.0.4.jar 和ognl-2.6.11.jar类库复制到web项目的WEB-INF/lib目录下。
+2，编辑web项目中的web.xml配置文件，在配置文件中增加struts2核心Filter的配置。
+   <fileter> ...</filter>   <filter-mapping>... </filter-mapping>标签。
+项目应用时，需要在WEB-INF/classses 文件夹中新建struts.xml配置文件。主要在其中配置Action，其中包括指定
+Action的实现类，以及Action出来结果与视图资源文件之间的映射。
+Action的实现由三种：
+a，只需编写getter和setter方法并实现exectue()方法的普通实体类。
+b，实现struts2所提供的Action接口。
+c，继承ActionSupport类。
+
+
+一个典型的Struts2框架web应用需要两个重要的配置文件web.xml，struts.xml。
+web.xml
+<filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+struts.xml
+<struts>
+  <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+  <include file="struts-hello.xml" />
+  <package name="default" namespace="/" extends="struts-default">
+
+    <global-results>
+       <result name="exception">/exception.jsp</result>
+    </global-results>
+
+    <action name="hello">
+       <result>/hello.jsp</result>
+    </action>
+  </package>
+</struts>
+
+action配置
+1、没有对应的action类	
+  <action name="hello">
+     <result>/hello.jsp</result>
+  </action>
+2、有指定的action类，不明确指定调用的method
+  <action name="hello2" class="com.ccb.cost.struts2.helloAction">
+     <result name="success">/ >/hello2.jsp</result>
+  </action>
+3、有指定的action类，并且使用OGNL表达式指定调用的method
+  <action name="hello-*" class="com.ccb.cost.struts2.helloAddAction" method = "{1}">
+     <result name="success">/hello_{1}_sucess.jsp</result>
+     <result name="error">/hello_{1}_error.jsp</result>
+  </action> 
+实现Action的最常用的方法是从ActionSupport继承
+Action执行的时候并不一定要执行execute方法，可以在配置文件中配置Action的时候用method=来指定执行哪个方法
+也可以在url地址中动态指定（动态方法调用DMI）（推荐）
+
+Web.xml中result的类型
+1.dispatcher（默认方式，即运用服务器跳转，只能跳转到页面，不能跳转到action）
+2.redirect(只能跳转到另外一个视图，不能跳转到另外一个action)客户端跳转
+3.chain意思是forward到一个action
+4.redirectAction跳转到另外一个action
+
+
+Struts2框架的搭建步骤
+1.添加struts2开发需要的6个包。
+struts2-core-2.x.x.jarStruts2框架的核心类库。
+xwork-2.x.x.jarxwork类库，Struts在其上构建
+ognl-2.6.x.jar对象图导航语言(Object Graph Navigation Language)Struts2框架通过其读写对象的属性。
+freemarker-2.3.x.jsr.Struts2的UI标签的模板使用FreeMarker编写。
+commons-logging-1.1.x.jar.Asf出品的日志包，Struts2框架使用这个日志包来支持Log4j和JDK1.4+的日志记录。
+commons-fileupload-1.2.1.jar.文件上传组件
+
+2.编写Struts2的配置文件。
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="users" namespace="/com/accp/action" extends="struts-default">
+       <action name="UserAction" class="com.accp.action.UserAction" method="addUser">
+           <result name="success">/welcome.jsp</result>
+       </action>
+    </package>
+</struts>
+
+3.在web.xml中加入Struts2 MVC框架启动配置
+<filter>
+    <filter-name>struts</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+    </filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>struts</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+使用struts2提供的标签库必须在页面中使用taglib编译指令导入标签库，添加代码如下：
+<%@taglib prefix="s" uri="/struts-tags" %>
+ActionSupport类实现了Action接口和Validatable接口。可以通过继承ActionSupport类简化Action开发。
+通过重写Validate()方法可方便实现校验功能。通过调用addFieldErrors方法添加相应错误提示信息。如果
+校验失败，需要跳转到input锁对应的视图资源页面中。所以必须在struts.xml中配置input逻辑视图对应的视图
+资源login.jsp。
+this.addFieldError("upassword","password is required")  --这个会显示在页面提示中。
+
+
+创建struts2 web项目步骤
+1，创建目录结构，创建下述两个xml文件并配置。
+    struts2qs
+         WEB-INF
+            classes(struts.xml)
+            lib(struts2-core.jar,xwork-core.jar,ognl.jar,freemarker.jar等)
+            web.xml
+    loginForm.jsp
+    error.jsp
+    welcome.jsp
+2，实现控制器类
+   在src目录中写Action类，在struts.xml中配置action
+3, 写视图页面
+
+Action
+与Servlet API分离了，但提供了ActionContext类来访问Servlet API。
+
+
+
+《iBatis 实战》
+iBatis是一个持久层框架。
+在现实世界中，混合型解决方案随处可见。将两个看上去似乎相悖的思想在中间处巧妙结合，被证明
+是一种有效的方法，它往往能恰到好处的解决问题。ibatis就是这样一个混合型的持久层解决方案。
+
+iBatis框架的核心价值：外部化SQL和封装SQL。
+封装是模块化的一种形式，它不仅将代码组织到一个内聚的模块中，而且还将实现细节隐藏了起来而仅仅向调用
+该类的代码暴露出它的接口。封装的概念可以应用到持久层中，可以通过定义SQL的输入和输出来封装它ibatis使
+用XML来封装SQL。ibatis使用XML映射SQL语句的输入和输出。
+
+德米特法则：每一层都应该只对那些与自己紧密相关的层有有限的了解。
+
+不可能要求用户为了买一本书而去下载一个应用程序。
+
+ibatis与O/RM不同，它不是直接把类映射为数据库表或者说把类的字段映射为数据库列，而是把SQL语句的参数
+与结果（也即输入和输出）映射为类。ibatis的映射层其实就是SQL，它让你编写SQL语句，ibatis负责在类的
+特性（property）和数据库表的列之间映射参数和结果。 
+
+两个配置文件
+SqlMapConfig.xml文件：主配置文件，是ibatis的起点，定义全局配置选项，负责把所有的SQL映射文件组合在
+一起。包含连接数据库信息，以及获取哪些SQLMap文件。
+SqlMap.xml文件：用于定义那些已映射语句，包含了将要运行的SQL语句。
+
+ibatis 安装
+将下面两个JAR文件添加到应用程序的类路径中即可。并在项目中配置上述两个xml文件。
+ibatis-common-2.jar  共享的ibatis类。  ibatis-sqlmap-2.jar  ibatis 的sql映射类。
+ 
+
+SQL Maps 
+SQL Map XML配置文件 SqlMapConfig.xml
+统一配置不同的属性，包括DataSource的详细配置信息，SQL Map和其他可选属性，如线程管理等。
+SQL Map XML映射文件
+
+
+SQL Map使用简单的XML配置文件将Java Bean映射成SQL语句。要使用SQL Map，只要熟悉Java Bean，XML和SQL，就能使
+您充分发挥SQL语句的能力。SQL Map API让开发人员可以轻易地将Java Bean映射成PreparedStatement的输入参数和
+ResultSet结果集。
+以下流程描述了SQL Maps的高层生命周期：
+将一个对象作为参数(对象可以是JavaBean，Map实现和基本类型的包装类)，参数对象将为SQL修改语句和查询语句设定参数值。
+1) 执行mapped statement。这是SQL Maps最重要的步骤。SQL Map框架将创建一个PreparedStatement实例，用参数对象为PreparedStatement实例设定参数，执行PreparedStatement并从ResultSet中创建结果对象。
+2) 执行SQL的更新数据语句时，返回受影响的数据行数。执行查询语句时，将返回一个结果对象或对象的集合。和参数对象一样，结果对象可以是Java Bean，Map实现和基本数据类型的包装类。
+
+
+sqlmapconfig.xml
+
+<properties>元素
+SQL Map配置文件拥有唯一的<properties>元素，用于在配置文件中使用标准的Java属性文件（name＝value）。SQL Map配置文件及其每个映射文件都可以使用占位符${driver}来代表值org.hsqldb.jdbcDriver。例如：
+<property name="JDBC.Driver" value="${driver}"/>
+
+<setting>元素
+<setting>元素用于配置和优化SqlMapClient实例的各选项。<setting>元素本身及其所有的属性都是可选的。
+
+<typeAlias>元素
+<typeAlias>元素让您为一个通常较长的、全限定类名指定一个较短的别名。例如：
+<typeAlias alias="shortname" type="com.long.class.path.Class"/>
+
+<transactionManager>元素
+<transationManager>元素让您为SQL Map配置事务管理服务。属性type指定所使用的事务管理器类型。这个属性值可以是一个类名，也可以是一个别名。包含在框架的三个事务管理器分别是：JDBC，JTA和EXTERNAL。
+
+<datasource>元素
+<datasource>是<transactionManager>的一部分，为SQL Map数据源设置了一系列参数。目前SQL Map架构只提供三个DataSource Factory。SimpleDataSourceFactory，DbcpDataSourceFactory，JndiDataSourceFactory。
+您可能需要象下面的例子一样配置，让它能和全局事务一起工作：
+<transactionManager type="JTA" >
+   <property name="UserTransaction" value="java:/ctx/con/UserTransaction"/>
+	<dataSource type="JNDI">
+	      <property name="DataSource" value="java:comp/env/jdbc/jpetstore"/>
+	</dataSource>
+</transactionManager>
+注意，UserTransaction属性指向UserTransaction实例所在的JNDI位置。JTA事务管理需要它，以使SQL Map能够参与涉及其他数据库和事务资源的范围更大的事务。
+
+<sqlMap>元素
+<sqlMap>元素用于包括SQL Map映射文件和其他的SQL Map配置文件。每个SqlMapClient对象使用的所有SQL Map映射文件都要在此声明。映射文件作为stream resource从类路径或URL读入。您必须在这里指定所有的SQL Map文件。例子如下：
+<!-- CLASSPATH RESOURCES -->
+<sqlMap resource="com/ibatis/examples/sql/Customer.xml" />
+<sqlMap resource="com/ibatis/examples/sql/Account.xml" />
+<sqlMap resource="com/ibatis/examples/sql/Product.xml" />
+<!-- URL RESOURCES -->
+<sqlMap url="file:///c:/config/Customer.xml " />
+<sqlMap url="file:///c:/config/Account.xml " />
+<sqlMap url="file:///c:/config/Product.xml" />
+
+
+SQL Map XML映射文件
+这里是一个mapped statement较复杂的例子，使用了更多的特性。
+<sqlMap id=”Product”> ---假如要操作很多表，那么可以每个表对应一个sqlMap，这里就是Product表对应的sqlmap。
+  <cacheModel id=”productCache” type=”LRU”>
+      <flushInterval hours=”24”/>
+      <property name=”size” value=”1000” />
+  </cacheModel>
+  <typeAlias alias=”product” type=”com.ibatis.example.Product” />
+  <parameterMap id=”productParam” class=”product”>
+      <parameter property=”id”/>
+  </parameterMap>
+  <resultMap id=”productResult” class=”product”>
+      <result property=”id” column=”PRD_ID”/>
+      <result property=”description” column=”PRD_DESCRIPTION”/>
+  </resultMap>
+  <select id=”getProduct” parameterMap=”productParam” resultMap=”productResult” cacheModel=”product-               cache”>
+      select * from PRODUCT where PRD_ID = ?
+  </select>
+</sqlMap>
+
+虽然框架为您做了很多工作，为了完成一个简单的查询操作，依然需要做很多。别担心，下面是一个简洁版本。
+<sqlMap id=”Product”>
+  <select id=”getProduct” parameterClass=” com.ibatis.example.Product”
+         resultClass=”com.ibatis.example.Product”>
+    select
+    PRD_ID as id,
+    PRD_DESCRIPTION as description
+    from PRODUCT
+    where PRD_ID = #id#
+  </select>
+</sqlMap>
+但是简洁版本的行为和前一个声明的行为不太一样。首先，简洁版本没有定义缓存，因此每一个请求都要读取数据库。其次，简洁版本使用了框架的自动映射特性，这将带来一些副作用。 注意！一个SQL Map XML映射文件可以包含任意多个Mapped Statement，Parameter Map和Result Map。按照它们之间的逻辑关系，为您的应用合理地组织Mapped Statement，Parameter Map和Result Map。
+SQL Map的核心概念是Mapped Statement。Mapped Statement可以使用任意的SQL语句，并拥有parameter map（输入）和result map（输出）。Mapped Statement的结构如下所示：
+<statement id=”statementName”
+[parameterClass=”some.class.Name”]
+[resultClass=”some.class.Name”]
+[parameterMap=”nameOfParameterMap”]
+[resultMap=”nameOfResultMap”]
+[cacheModel=”nameOfCache”]
+>
+
+select * from PRODUCT where PRD_ID = [?|#propertyName#]
+order by [$simpleDynamic$]
+</statement>
+在上面的表达式中，括号[]里的部分时可选的属性，并且在某些情况下只有特定的组合才是合法的。因此下面这个简单的例子也是正确的：
+<statement id=”insertTestProduct” >
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION) values (1, “Shih Tzu”)
+</statement>
+上面的例子不太可能出现，但如果只是简单地想用SQL Map架构来执行任意地的SQL语句，这种写法就派上用场了。但常见的用法还是通过Parameter Map和Result Map，来实现Java Bean映射的特性，这是SQL Map真正有价值的地方。
+Statement的类型
+<statement>元素是个通用声明，可以用于任何类型的SQL语句。通常，使用具体的statement类型是个好主意。
+
+
+Spring学习
+目标：需要了解下列核心内容
+Ioc 和Aop（xml配置和注解）
+了解事务管理
+MVC
+SSH集成
+
+《Spring In Action》
+Spring框架致力于简化企业级java开发，通过：依赖注入，面向切面编程和消除样板式代码来简化Java开发。
+Spring是一个从实际项目开发经验中抽取的，可高度重用的应用框架。Spring的设计哲学是提供一种无侵入式
+的高扩展性框架，即无需代码中涉及Spring专有类，即可将其纳入Spring容器进行管理。
+Spring特性：
+降低组件之间的耦合度，实现软件各层之间的解耦。
+可使用容器提供的众多服务，比如事务管理，消息管理，持久化服务等。
+容器提供单列模式支持。
+容器提供AOP技术，利用它很容易实现如权限拦截，日志监控等功能。
+容器提供众多辅助模板类如JdbcTemplate，HibernamteTemplate
+对主流应用框架提供了支持。
+
+Spring框架分为6个功能模块：
+核心容器模块，AOP模块，数据访问与集成模块，web和远程调用模块，Instrumentation模块，测试模块。
+Spring自带了几种容器实现，可以归结为两种不同类型，Bean工厂和应用上下文。
+三种应用上下文：
+ClassPathXmlApplicationContext  从类路径下的xml配置文件中加载上下文定义，把应用上下文定义文件当作类资源。
+FileSystemXmlapplicationcontext 读取文件系统下的xml配置文件并加载。
+XmlWebApplicationContext  读取Web应用下的xml配置文件并加载。
+装配：创建应用对象之间协作关系的行为通常被称为装配，这也是依赖注入的本质。
+我们需要配置Spring来告诉容器它需要加载哪些bean和如何装配这些Bean。Spring3.0提供了两种配置方式：使用一个
+或多个xml文件作为配置文件，和提供了基于Java注解的配置方式。
+xml文件配置方式:
+spring 配置文件的根元素是<beans>元素。beans命名空间不是唯一的spring命名空间，spring核心自带了10个命名
+空间配置：aop,beans,context,jee,lang,mvc,oxm,tx,util。
+
+通过构造器注入
+<bean id="duke" class="com.springginaction.springidol.Juggler" /> 
+	<constructor-arg value="15" />
+</bean>
+使用<property>元素为Bean的简单属性赋值。
+<bean id="kenny" class="com.ccb.springtest.Instrumentalist">
+	<property name="song" value="Jingle Bells" />
+	<property name="instrument"  ref="saxophone" />
+</bean>
+也可用注入内部Bean。内部Bean并不限于setter注入，也可以把内部Bean装配到构造方法的入参中。
+<bean id="kenny2" class="com.ccb.springtest.Instrumentalist">
+	<property name="song" value="Jingle Bells" />
+	<property name="instrument">
+		<bean class="com.ccb.springtest.Saxophone" />
+	</property>
+</bean>
+Spring的命名空间P装配属性。
+只需在Spring的xml配置中增加一段声明：
+<beans  ...
+    xmlns:p="http://www.springframework.org/schema/p"
+     ... >
+通过此声明，可以使用p:作为<bean>元素所有属性的前缀来装配Bean属性。
+<bean id="kenny2" class="com.ccb.springtest.Instrumentalist">
+	p:song = "Jingle Bells"  
+	p:instrument-ref = "saxophone" />
+配置元素的集合属性
+<bean id="hank" class="com.ccb.springtest.OneManBand">
+	<property name="instruments">
+		<list>
+			<ref bean="guitar" />
+			<ref bean="cymbal" />
+			<ref bean="harmonica" />
+		</list>
+	</property>
+</bean>
+为属性装配空值用特殊标记<null/>
+<property name="instrument"><null/></property>
+注解方式注入：主要针对对象属性的注入
+<context:annotation-config /> <!--开启注解功能 -->
+自动扫描管理Bean
+它依据在xml文件中指定的包名和类中标记的component系列注解来自动扫描Bean。经常用于比较大的项目中。如果使用
+service或component不指定名称，这些实例Bean的名称就是类名（但首字母小写），也可指定bean名称如@service("aaa")。
+使用自动扫描管理的核心：配置扫描的包，类前的component标记，了解常用注解。
+<context:component-scan base-package="com.ccb.jdbctest" /><!--开启自动扫描管理bean功能  -->
+
+
+SpEL
+value属性中使用#{}界定符把值装配到Bean的属性中。
+<property name=“count” value="#{5}" />
+
+
+分布于应用中多处的功能被称为横切关注点。依赖注入有助于应用对象之间的解耦，而AOP可实现横切关注点与
+它们所影响的对象之间的解耦。日志，声明式事务，安全和缓存都是切面所适用的多个场景。
+如何把普通类声明为一个切面以及如何使用注解创建切面？
+继承和委托是最常见的实现重用通用功能的面向对象技术，但继承会导致一个脆弱的对象体系，而使用
+委托可能需要对委托对象进行复杂的调用。切面提供了取代继承和委托的另一种选择。而且在很多场景
+下更清晰简洁。
+描述切面常用的术语有：通知，切点和连接点。
+通知：切面的工作被称为通知。通知定义了切面是什么以及何时使用。
+连接点：我们的应用可能需要对数以千计的时机应用通知，这些时机被称为连接点。连接点是在应用执行过程中能够
+插入切面的一个点。这个点可以是调用方法时，抛出异常时，甚至修改一个字段时。切面代码可以利用这些点插入到
+应用的正常流程中，并添加新的行为。
+切点：如果通知定义了切面的“什么”和“何时”，那切点就定义了“何处”。通常使用明确的类和方法名称来指定
+这些切点，或是利用正则表达式定义匹配的类和方法名称模式来指定这些切点。
+切点用于准确定位应该在什么地方应用切面的通知。切点和通知是切面的最基本的元素。
+
+
+《Spring 技术内幕》
+Spring关心的是，如何为开发者集中管理在Java惬意应用和WEB应用中涉及的数据持久化，事务处理，消息中间件，
+分布式计算等抽象资源，并在此基础上，为应用提供了一个基于POJO的开发环境。研究Spring，粗浅的把它划分
+为：核心，组件和应用三个基本的层次。
+实现核心：Ioc容器和AOP两个模块。
+系统组件：事务管理，WEB MVC, JDBC, O/R映射，远端调用等。
+应用组件：Spring DM, Spring FLEX,ACEGI 等。
+Spring 通过使用xml和Java注解提供了一个全面的配置模型。
+SpELl可用来执行属性或Bean注入以及方法调用。
+
+
+
+
+
+Spring框架学习视频
+SSH中，主要用Spring容器管理我们程序中的Action，DAO组件等，通过容器的IOC和AOP机制，利用IOC特性可以降低
+Action和DAO之间的关联，利用AOP进行事务管理等共通部分处理。
+Spring框架的容器
+Spring框架的核心是提供了一个容器。该容器类型是BeanFactory或ApplicationContext。该容器具有以下功能：
+a：容器可以创建和销毁组件对象。（等价于原来工厂的作用）
+b：容器可以采用不同模式创建对象。
+c：容器具有IOC机制实现。
+d：容器具有AOP机制实现。
+
+Spring容器的基本应用
+1）如何将一个bean组件交给Spring容器。
+  方法：在applicationContext.xml添加以下定义<bean id="标识符" class="bean组件类型"> </bean>
+2）如何获取Spring容器对象
+  ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml")；
+  利用  ctx.getBean("标识符"); 方法获取容器中的Bean对象。
+3）可以控制对象创建的模式singleton（单列）和prototype（原型）两种模式。默认是单列模式。
+ <bean>中的 scope="prototype" 属性修改。
+4）可以指定对象指定初始化和销毁的方法。bean中  init-method="初始化方法" destroy-method="销毁方法" 属性指定。
+
+5）IOC特性
+   控制反转(反向控制)，指的是将控制逻辑交给第三方框架或容器负责，当两个组件关系发生改变时，只需要修改框架
+或容器配置，主要用依赖注入技术。分为setter方式注入和构造方法注入。
+a：setter方式注入例如：
+Action类A 用DAO B时，在A中定义B的接口变量，提供setter方法，然后直接调用接口变量的方法即可。B接口变量的
+b：生成由容器控制。
+构造方法注入
+依靠构造方法，将组件对象传入。在A中定义B的接口变量，并且A中的构造方法中提供B接口的变量。构造方法把变量
+传递给A的私有变量。
+c：Spring各种类型数据的注入
+1，Spring可以为对象注入以下类型的数据。
+2，Bean对象的注入 <property name="属性" ref="要注入的Bean对象ID">
+3，基本类型数据的注入（例如字符串，数字）
+<property name="属性" value="要注入的值">
+4，集合数据注入:list,set,map,properties
+<property name="属性">
+    <list>
+	<value>/org/tarena/Cost.hbm.xml</value>
+        <value>/org/tarena/Admin.hbm.xml</value>
+        <value>/org/tarena/Role.hbm.xml</value>
+    </list>
+</property>
+
+6)AOP概念
+核心内容：将共通组件(方面)作用于目标组件(目标)上。切入点：用于指定目标组件的表达式。它是连接点的集合。
+
+IOC：将一个对象与另一个对象解耦。AOP：将一个对象(共通作用的对象如事务控制)与另一堆对象解耦。structs的
+拦截器类似这个概念。
+OOP主要关注的是对象，如何抽象和封装对象。AOP主要关注的是方面(切面)，方面组件可以以低耦合方式切入到其它
+某一批目标对象方法中。AOP主要解决共通处理和目标组件之间的解耦问题，即一对多解耦问题。
+主要方法：在spring配置文件中加相关配置。
+<bean id="loggerBean" class="org.tarena.aop.LoggerBean"></bean>  ---这个当作方面组件
+
+<aop:config>
+   <aop:pointcut id="actionPointcut" 
+        expression"within(ora.tarena.action.*)"/>
+   <aop:aspect id="loggerAspect" ref="loggerBean"> 
+      <aop:before pointcut-ref="actionPointcut" method="logger"/>  --logger:LoggerBean中的方法。  
+   </aop:aspect>
+</aop:config>
+
+
+AOP的相关概念：
+a.方面(切面 Aspect)
+  指的是封装了共通处理的功能组件。该组件可以作用到某一批目标组件的方法之上。
+b.切入点(Pointcut)
+  用于指定目标组件的表达式。可以具体指定到某一个类的某个方法上。
+c.连接点(JoinPoint)
+  切入点是连接点的集合。指的是方面组件和具体哪一个目标组件的方法有关系。连接点是具体的方法。
+d.通知(Advice)
+  用于指定方面组件和目标组件方法之间的作用时机。(是之前还是之后执行)
+e.目标(Target)
+  利用切入点指定的组件和方法。
+f:动态代理(AutoProxy)
+  Spring采用了动态代理技术技术实现了AOP机制。当使用AOP之后，从容器getBean()获取的目标组件，返回的
+  是一个动态代理类。然后通过代理类执行业务方法，代理类负责调用方面组件功能和原目标组件功能。
+
+7)通知类型
+  通知决定方面组件和目标组件作用的关系。主要有以下几种类型通知：
+a.前置通知。b.后置通知。c.最终通知。d.异常通知。e.环绕通知。
+
+配置切面
+<aop:aspectj-autoproxy /> 
+<bean  class="cn.ccb.aop.AllLogAdviceByAnnotation"></bean>
+AOP时容易出错，一般是JDK版本和aspectjrt-1.7 	
+
+配置属性文件不能用中文时，可以用jdk中工具:native2ascii.exe转码。
+
+注解
+下列注解会将组件纳入spring管理，需中spring配置文件中开启组件扫描。
+<context:componet-scan base-package="com.kevin.dao">
+@Component(其他不好分类的组件)
+@Controller(Action组件)
+@Service(业务类组件)
+@Repository(DAO组件)
+@Scope("prototype")
+@Resource(name="hibernateDao ")(写中属性或属性的set方法前，指定注入)
+@Autowired 同@Resource,默认按类型匹配注入。如果要指定注入的类，后面还要加@Qualifier("hibernamteDao")
+方法上
+@PostConstruct 等价于init-method属性定义
+@PreDestroy    等价于destory-method属性定义
+
+AOP注解
+需要在xml文件中启用AOP注解的标签
+<aop:aspectj-autoproxy />
+@Component
+@Aspect //将该组件定义为方面组件
+@Pointcut("within(com.kevinc.action..*)") //切入点表达式
+public void mypoint(){} //主要目的是使用@Pointcut 
+@Arount("mypoint()") //环绕通知
+
+Spring事务管理
+1，先在application.xml中配置事务管理器。
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   <property name="dataSource" ref="dataSource"></property>
+</bean>
+2，<!--启用事务注解-->
+<tx:annotation-driven transaction-manager="transactionManager" />
+3，在需要启用事务的方法上加事务注解
+@Transactional
+public void purchase(String username, String isbn){
+ ...
+}
+a:使用propagation指定事务的传播行为，即当前的事务方法被另外一个事务方法调用时默认取值为REQUIRED，即使用
+调用方法的事务。REQUIRES_NEW:开启自己的事务，调用的事务方法的事务被挂起。
+@Transactional(propagation=propagation.REQUIRED) 事务的默认传播行为。
+
+b:隔离级别：使用isolation属性指定隔离级别，最常用的取值为READ_COMMITTED。
+@Transactional(propagation=propagation.REQUIRES_NEW,isolation=Isolation.READ_COMMITTED)
+c:默认情况下Spring的申明式事务对所有的运行时异常进行回滚，也可通过对应的属性进行设置。通常情况下取默认值即可。 
+
+xml方式配置事务
+1，配置事务管理器
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   <property name="dataSource" ref="dataSource"></property>
+</bean>
+2，配置事务属性
+<tx:advice id="txAdvice" transaction-manager="tansactionManager">
+    <tx:attributes>
+       <tx:method name="purchase" propagation="REQUIRES_NEW"/> <!--这个通常用默认值，不设置这个-->
+       <tx:method name="get*" read-only="true"/>
+       <tx:method name="find*" read-only="true"/>
+       <tx:method name="*"/>
+    </tx:attributes>
+</tx:advice>
+3，配置事务切入点，以及把事务切入点和事务属性关联起来
+<aop:config>
+    <aop:pointcut expression="excution(* com.kevin.spring.tx.xml.BookshopServcie.*(..))" id="txPointCut" />
+    <aop:advisor advice-ref="txAdvice" point-ref="txPointCut" />
+</aop:config>
+
+Spring整合Hibernate
+Spring整合Hibernate整合什么？
+1，由IOC容器来管理Hibernate的SessionFactory。
+2，让Hibernate使用上Spring的申明式事务。
+整合步骤：
+1，加入hibernate
+jar包，添加hibernate的配置文件：hibernate.cfg.xml
+2，加入Spring
+jar包，加入spring配置文件
+
+
+Spring如何在WEB应用中使用?
+1，需要额外加入2个jar包：spring-web-4.0.RELEASE.jar，spring-webmvc-4.0.RELEASE.jar。
+2，Spring的配置文件，没有什么不同。
+3，如何创建IOC容器
+a，非web应用在main方法中直接创建。
+b，web应用在应该在web应用被服务器加载时就创建IOC容器。在ServletContextListener的contextInitialized方法
+  中创建IOC容器。
+c，在web应用的其他组件如何来访问IOC容器呢？
+可以放在ServletContxt(即application域)的一个属性中。
+
+
+
+
+
+
+
+Hibernate学习
+驾驭Hibernate工具，需要：1：熟悉它的API中的接口和类的用法。2：掌握如何进行对象-关系映射。 
+hibernate核心类3个：Configuration，Hibernate配置文件，SesisonFactory。最核心的一个接口：session。
+
+Configuration类：复制管理Hibernate的配置信息，一个Configuration类的实例代表了应用程序中Java类到
+数据的映射的集合。应用程序通常只是创建一个Configuration实例，并通过它创建SessionFactory实例。
+SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+Configuration是hibernate的入口。在创建Configuration实例时，hibernate会在类路径中查找文件
+hiberate.properties文件和hibernate.cfg.xml文件。
+Hibernate配置文件：是配置整个数据库的信息。同时还管理着数据库中各个表的映射文件。
+SesisonFactory类：它负责Session实例的创建。
+
+Hibernate开发步骤
+1.创建Hibernate配置文件。
+2.创建持久化类。要求：ａ符合JavaBean规范。ｂ有不带参数的构造函数
+3.创建对象关系映射文件。“类名.hbm.xml”。还必须在hibernate配置文件中配置该映射文件。
+  <mapping resource="net/hncu/hibernate/Product.hbm.xml" />
+4.通过Hibernate API编写访问数据库的代码。
+
+session接口的实现类的save()方法的执行步骤如下：
+1，运用java反射机制，了解到Monkey对象的类型为Monkey.class。
+2，参考对象-关系映射元数据。了解Java类对应的数据库表，以及属性和字段的映射关系。
+3，根据上述映射关系，生成sql语句。
+4，通过JDBC API执行sql语句。
+
+
+设计模式
+设计模式：描述常见设计问题的可复用解决方案。
+23种设计模式，可分为三大类：创建型， 结构型， 行为型。
+六大设计原则 
+单一职责原则：一个类应该只有一个职责。
+里氏替换原则：所有引用基类的地方必须透明地使用其子类对象。即只要父类出现的地方子类都可出现。反过来不行。
+依赖倒置原则：模块间的依赖通过抽象发生，实现类之间不发生直接的依赖关系。接口或抽象类不依赖于实现类。实现类
+             依赖于接口或抽象类。
+接口隔离原则：类间依赖关系应建立在最小的接口上。
+迪米特法则：一个类的对象应当对其他对象尽可能少的了解。只与你直接的朋友们通信。不要跟陌生人说话。每个软件单位
+           对其他单位都只有最少的了解。
+开闭原则：一个软件实体应当对扩展开发，对修改关闭。它是最基础的原则，其他原则都是开闭原则的体现。
+
+
+创建型（5）：
+单例模式，工厂方法模式，抽象工厂模式，建造者模式，原型模式。
+
+结构型（7）：
+代理模式，装饰模式，适配器模式，组合模式，桥梁模式，外观模式，享元模式。
+
+行为型（11）：
+模板方法模式，命令模式，责任链模式，策略模式，迭代器模式，中介者模式，观察者模式，备忘录模式，访问者模式，
+状态模式，解释器模式。
+
+
+
+Log4j日志记录器
+配置：3个方面，优先级，输出位置，输出格式。
+使用：static Logger logger = Logger.getLogger(myClass.getName());
+      logger.info("this is test log4j!...........");
+需要在src文件夹中配置log4j.properties的属性文件（针对控制台程序）。内容如下：
+#log4j.rootLogger=debug,appender1
+#log4j.rootLogger=info,appender1
+log4j.rootLogger=error,appender1
+log4j.appender.appender1=org.apache.log4j.ConsoleAppender
+log4j.appender.appender1.layout=org.apache.log4j.TTCCLayout
+
+即需要配置3个方面的内容：
+1，根目录（级别和目的地）。
+2，目的地（控制台、文件等）。
+3，输出样式。
+
+或者，使用下面的内容：
+log4j.rootLogger=WARN,stdout
+#log4j.rootLogger=WARN,stdout,logfile
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p[%c]-%m%n
+log4j.appender.logfile=org.apache.log4j.FileAppender
+
+
+《Java EE设计模式 Spring企业级开发最佳实践》
+一个设计良好的软件应该使用不同的配置参数来控制它的运行时行为。
+Spring Core
+1,IOC 控制反转。
+2,DI 依赖注入。分为拉式和推式。推式方法有：直接实例化，工厂助手，在注册服务中定位。
+3,Bean 工厂。
+4,应用上下文。
+
+
+Junit
+使用共3步：
+1，编写测试类，使其继承TestCase。
+2，编写测试方法，使用test+xxx的方式命名测试方法。
+3，编写断言。如果测试方法有公用的变量等需要初始化和销毁，则可使用setUp，tearDown方法。
+
+
+
+Mybatis
+主要学习掌握内容
+1，mybatis 配置文件：
+	SqlMapConfig.xml名称不固定。是全局配置文件，配置了数据源，事务等mybatis运行环境。还配置了映射
+	文件mapper.xml(包含sql语句，参数及结果类型)
+     
+2，mybtis 核心：
+	mybatis输入映射
+	mybatis输出映射
+	mybatis动态sql
+3，mybatis延迟加载：resultMap才可以，执行两个有关联的查询。需在sqlMapConfig.xml文件的settings中配置。
+4，mybatis查询缓存
+5，mybatis和spring整合
+6，mybatis逆向工程：新建个工程，安装相关包，写配置文件，写一个java程序并运行即可生成所需文件。
+7，spring和mybatis整合：需要spring通过单例方式管理sqlsessionFactory，用它创建sqlsession和mapper对象等。
+                        jar包mybatis3.2.7,spring3.2.0,mybatis-spring-1.2.2包。
+
+mybatis主要用于持久层操作即数据库表与java实体对象的映射操作。有两种实现方式，xml配置文件和映射器类(即java注解)。
+两种方式都需要先在Mybatis框架的配置文件中进行注册。
+这里举例映射器类的实现：
+1，编写映射器接口。
+public interface IAdminMapper {
+	@Select("select * from admin where adminid=#{adminid}")
+	public Admin getAdminById(int adminid);}
+
+2，在conf.xml中注册
+<mappers>		
+  <mapper resource="com/kevin/biz/AdminMapper.xml"/>
+  <mapper class="com.kevin.dao.IAdminMapper"/>
+</mappers>
+
+3，在业务逻辑类中使用
+String resource = "conf.xml"; 
+InputStream is = MybatisSession.class.getClassLoader().getResourceAsStream(resource);		
+SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);	
+SqlSession session2 = sessionFactory.openSession();
+		 
+IAdminMapper adminmapper = session2.getMapper(IAdminMapper.class);
+Admin admin2 = adminmapper.getAdminById(1);
+System.out.println(admin2);
+
+多表查询时，结果封装
+<!--   一对一多表查询，方法一，封装一个对象，包括两个表的字段  -->
+<!--   一对一多表查询，方法二，封装两个对象，其中一个对象中包含另一个对象 -->
+<select id="selectEmployeeDept3" parameterType="int" resultMap="empDeptResultMap2">
+	 	select empno,ename,job,mgr,hiredate,sal,comm,emp.deptno,dname,loc 
+	 	from emp,dept where emp.deptno=dept.deptno and empno=#{empno}
+</select>
+<resultMap id="empDeptResultMap2"  type="Employee"  >
+	<id property="empno" column="empno"/>
+	<result property="ename" column="ename"/>
+	<result property="job" column="job"/>
+	<result property="mgr" column="mgr"/>
+	<result property="hiredate" column="hiredate"/>
+	<result property="sal" column="sal"/>
+	<result property="comm" column="comm"/>
+	<association property="dept"  javaType="Dept" >
+		<id property="deptno" column="deptno"/>
+		<result property="dname" column="dname"/>
+		<result property="loc" column="loc"/>
+	</association>
+</resultMap>
+
+动态SQL：对sql语句灵活操作，对查询条件进行判断，生成拼接sql语句。
+if
+choose(when,otherwise)
+where,trim,set
+foreach
+
+Mybatis相关对象
+SqlSessionFactory(会话工厂)：SqlSessionFactory对象包含SqlSession实例的所有方法，创建sqlsession。而	                                     SqlSessionFactory本身是由SqlSessionFactoryBuilder创建的，它可从XML配置，
+			    注解或手动配置java来创建SqlSessionFactory。
+SqlSession(会话)：用这个接口执行增、删、改、查命令，获取映射器和管理事务。
+Executor(执行器)：Sqlsession内部通过执行器操作数据库。
+mapped statement(底层封装对象)：对操作数据库存储封装，包括sql语句，输入参数，输出结果类型。
+
+SqlSessionFactoryBuilder --> SqlSessionFactory --> SqlSession
+SqlSession 非常是一个强大的类，所有执行语句的方法，提交或回滚事务，还有获取映射器的实例。
+
+#{}表示占位符
+${}表示拼sql串，将接收的内容不加任何修饰拼接在sql中。会引起sql注入。中间只能用value。
+select * from emp where ename like '%${value}%'
+
+注意使用别名定义：单个别名定义，批量别名定义(package标签)--这个常用。
+
+mybatis学习方法:
+一个资料，mybaits官方文档参考。两个视频，尚硅谷张晓飞，尚硅谷无名。
+1，了解框架结构：核心流程图，有哪些核心文件，需要配置哪些地方。
+2，学习配置文件，学习关键点。
+3，学习具体操作过程案例。
+
+高级映射：
+    将关联查询映射到一个pojo属性中。（一对一） 可以用resultType，也可以用resultMap
+    将关联查询映射到一个List<pojo>属性中。（一对多）resultType，resultMap都可，使用collection对多条记录
+    映射到list集合中。 
+
+1，分析表间关系。
+2，写sql
+3，建立pojo对象。（用resultMap时，定义resultMap）
+4，写mapper.xml文件
+5，写mapper.java类(其实是接口，如果用注解，则无上面4)
+
+resultType作用：将查询结果按照sql列名，pojo属性名一致性映射到pojo中。
+resultMap作用：使用association和collection完成一对一和一对多高级映射。(使用resultMap是针对
+               那些查询有特殊要求的功能)
+
+
+SpringMVC
+SpringMVC应用开发步骤(两配置，两编写)
+1，配置web.xml，指定业务层对应的Spring配置文件，定义DispatcherServelet。
+2，配置SpringMVC的配置文件：配置映射器，适配器，handler，使控制器，视图解析器等生效。(相当于spring配置文件)
+3，编写处理请求的控制器（处理器）。
+4，编写视图对象，这里使用JSP作为视图。
+
+映射器类型：
+1，<!-- 根据bean的name进行查找Handler 将action的url配置在bean的name中 -->
+<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+2，<!-- 简单url映射 -->
+<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" />
+
+注解开发：
+springmvc.xml文件中配置：
+1，映射器，适配器的注解方式
+<mvc:annotation-driven></mvc:annotation-driven> 
+2，控制器的自动扫描
+<context:component-scan base-package="com.kevin.ssm.controller" />
+3，控制器编写，并使用相关注解	
+
+
+
+SSM开发实例步骤
+配置文件
+1，先配置web.xml其中主要配置springmvc的ItemsService。并指明springmvc.xml配置文件。
+   还配置加载spring容器，及包括spring用到的一系列配置文件。
+<servlet>
+	<servlet-name>springmvc</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	   <init-param>
+		<!-- 如果不配这个，默认加载/WEB-INF/servlet名称-servlet.xml文件 -->
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/springmvc.xml</param-value>
+	    </init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+
+<!-- 加载spring容器 -->
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/classes/spring/applicationContext-*.xml</param-value>
+</context-param>
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+2，springmvc.xml文件中配置映射器，适配器，处理器，视图解析器等。
+<!-- 注解   方式配置映射器，适配器。 -->	
+<context:component-scan base-package="com.kevin.ssm.controller"></context:component-scan>
+<mvc:annotation-driven/>
+
+<!-- 视图解析器 -->
+<!-- ViewResolver -->
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	<property name="prefix" value="/WEB-INF/jsp/"/>
+	<property name="suffix" value=".jsp"/>
+</bean>
+
+3，配置相关spring的配置文件，用于自动生成管理相关bean。如下可以用不同名称配置多个文件。
+applicationContxt-dao.xml
+    配置数据源，mybatis的SqlSessionFactoryBean，指明sqlMapConfig.xml配置文件，mapper扫描器等。
+applicationContxt-transaction.xml
+    对事务管理的一些配置，还包括通知和切面
+applicationContxt-service.xml
+    业务需要的各种bean的注册
+
+4，配置sqlMapConfig.xml文件
+由于mapper扫描器在上述spring配置文件applicationContxt-dao.xml中，这里只配置包别名和全局环境。
+
+5，编写po层实体bean
+   编写表对应的bean
+   编写根据查询对应的bean，继承或扩展上述表对应的bean，用于结果类型ItemsCustom
+   编写包装查询条件的bean，组合上述bean，用于查询条件的封装ItemsQueryVo
+
+6，编写mapper层（数据访问层）
+   编写mapper.xml文件及同名java接口名称一致且在同一文件夹中，以便能被mapper扫描器自动扫描。
+   可以用工具生成。这层主要对数据库操作。
+
+7，编写service层
+   主要业务层，调用mapper层获取数据。
+
+8，编写controller层
+   调用service层获取数据，返回模型和逻辑视图名。
+
+
+SpringMVC相关主题
+1，数据绑定
+2，数据校验
+3，数据回显
+4，异常处理
+5，上传图片
+
+2，数据校验(springmvc 使用hibernate的校验框架)
+控制层：校验页面请求参数的合法性。
+业务层service：主要校验关键业务参数（仅限于接口中使用的参数）。
+持久层dao：一般不校验。
+a：加入所需jar包：
+hibernate-validator-4.3.0.fina.jar
+jboss-loggin-3.1.0.cr2.jar
+validation-api-1.0.0.ga.jar
+b：配置校验文件
+   在springmvc.xml的配置文件中配置校验器及校验错误信息资源文件
+c：将校验器配置到处理器适配器中
+   <mvc:annotation-driven  conversion-service="conversionService" validator="validator" />
+d：在pojo中添加校验规则
+   在属性上用注解 @Size(min=1,max=30,message="items.name.length.error")
+e：在controller的方法参数中添加校验规则
+   public String editItemsSubmit(HttpServletRequest request,Integer id,
+   @Validated ItemsCustom itemsCustom, BindingResult bindingResult) throws Exception{}
+f：捕获校验错误，在页面显示错误信息
+   在controller方法中将错误信息传到页面即可。
+   model.addAttribute("allErrors",allErrors);
+g：在页面中添加错误信息显示代码
+   <c:if test="${allErrors!=null}">
+	<c:forEach items="${allErrors}" var="error">
+		${error.defaultMessage}
+	</c:forEach>
+   </c:if>
+
+3，数据回显
+   springmvc默认能对pojo数据进行回显。pojo数据传入controller方法后，springmvc自动将pojo数据放到
+   request域，key等于pojo类型(首字母小写)。也可以用@MOdelAttribute标注指定pojo回显到页面在request
+   中的key。
+
+4，异常处理
+a：定义自定义异常类
+b：定义异常处理类
+ 
+
+5，上传图片
+   a：在页面form中写属性 enctype="multipart/form-data"。控制器相关方法中写
+       参数：MultipartFile items_pic  //接收商品的图片。并在页面中设置对应属性供参数绑定。
+   b：需要springmvc对multipart类型的数据进行解析。在springmvc.xml中配置multipart类型解析器。
+   c：中服务器中建立图片服务器的目录及虚拟目录。
+   d：添加相关文件上传jar包。
+   e：控制器中编写文件存储的代码。
+   //原始图片名称
+   String originalFilename = items_pic.getOriginalFilename();
+   //上传图片
+   if(items_pic!=null && originalFilename!=null && originalFilename.length()>0  ){
+	//存储图片的物理路径
+	String pic_path ="D:\\tmp\\upload\\temp\\"; 
+	//生成新的图片名称
+        String newFileName = UUID.randomUUID() + 
+        originalFilename.substring(originalFilename.lastIndexOf("."));
+	File newFile = new java.io.File(pic_path+newFileName);	
+	//将内存中的数据写入磁盘
+	items_pic.transferTo(newFile);
+	//将新的图片名称写入到itemsCustom中
+	itemsCustom.setPic(newFileName); //路径信息存到数据库  }
+
+
+
+《Spring3.0就这么简单》
+Spring容器成功启动的三大要素是：
+1，Spring框架的类包都已经放到应用程序的类路径下。
+2，应用程序为Spring提供完备的Bean配置信息。
+3，Bean的类都已经放到应用程序的类路径下。
+以上也可说是：Bean定义信息，Bean实现类以及Spring本身。
+
+Spring框架的核心接口：
+BeanFactory
+ApplicationContext
+WebApplicationContext
+
+切面定义的4种方式:
+@AspecttJ, <aop:aspect>, Advisor, <aop:advisor>
+需要定义增强类型。前置，后置，环绕，异常，final增强，引介增强
+
+JdbcTemplate 把原来复杂的数据操作(如更新)简化为:定义SQL语句，准备参数，调用update()这3个简单的步骤。
+
+使用Spring开发时，它的事务管理是使用最多，应用最广的功能。Spring事务管理的亮点在于声明式事务管理。
+Spring的声明式事务管理是通过Spring AOP实现的。可以用xml配置方式和注解方式。
+Spring在基于Schema配置中，添加了一个tx命名空间，在配置文件中以明确结构化的方式定义事务属性。
+
+软件测试可分为：单元测试、集成测试、功能测试、系统测试。
+
+注解驱动及REST风格的SpringMVC是Spring3.0最出彩的功能之一。需要学习：数据绑定、视图解析、本地化处理、
+静态资源处理。
+
+映射请求（注解方式）：
+1,<context:componet-scan/> 扫描相应的类。
+2,类定义处和方法处用@RequestMapping注解。类定义处指定的URL相对于web应用的部署路径，方法处的则是相对于
+类定义处指定的URL。
+3，用@PathVariable,@RequestParam,@RequestHeader等对方法入参进行注解可绑定相应的HTTP请求参数。
+
+处理方法签名：有3种方式绑定请求参数
+1，如上，用@PathVariable,@RequestParam,@RequestHeader等注解。
+2，使用命令/表单对象绑定请求参数。方法中的参数用POJO对象。
+3，使用ServletAPI对象作为入参。方法中的参数用HttpServletRequest request,HttpServletResponse response。
+
+将模型数据输出给视图有以下方式
+1，ModelAndView 方法返回值类型为ModelAndView 时，方法体可通过该对象添加模型数据。
+2，@ModelAttribute 方法入参或定义中标注该注解后，入参对象就会放到数据模型中。
+3，Map及Model 入参为Model，ModelMap或Map时，处理方法返回时，Map中的数据会自动添加到模型中。
+4，@SessionAttributes 将模型中的某个熟悉暂存到HttpSession中，以便多个请求之间可共享这个属性。
+
+SpringMVC在内部使用一个org.springframework.ui.Model接口存储模型数据，在方法调用前会创建一个隐含的模型
+对象，作为模型数据的存储容器。
+
+在applicationContxt.xml 配置文件中
+配置下面的内容时，将扫描指定类包下的所有类，这样在类定义的Spring注解如@Repository，@Autowired才能起作用。
+<!--开启自动扫描功能，扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean注入 -->
+<context:component-scan base-package="com.kevin.dao" />	
+
+在web.xml中配置下述内容，启动Spring容器
+<!-- 加载spring容器配置文件，以便web容器启动时能自动启动Spring容器 -->
+<!-- 如果从类路径下加载spring配置文件，classpath关键字特指在类路径下加载，可用下面注释掉的行 -->
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/classes/applicationContext-*.xml</param-value>
+	<!-- <param-value>classpath:applicationContext-*.xml</param-value> -->
+</context-param>
+
+<!-- 负责启动Spring容器的监听器，它将引用上述的上下文参数获得Spring配置文件地址 -->
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+
+
+Java 学习
+基础：类，接口，匿名类，内部类，访问限定符，关键字final, static
+集合框架
+泛型
+IO流
+Lambda表达式
+
+变量：声明一个变量后，必须用赋值语句对变量进行显式初始化。可以将声明和初始化放在同一行中。变量的声明
+尽可能地靠近第一次使用的地方。
+int i;
+i = 12;
+int i=12;
+常量：用final关键字指示常量。关键字final表示这个变量只能被赋值一次，一旦被赋值后，就不能更改，习惯
+上，常量名使用全大写。经常希望某个常量在一个类中的多个方法中使用，将这些常量称为类常量，可以使用关键
+字 static final设置一个类常量。
+将实例域(字段)定义为final后，构建对象时必须初始化这样的域，也就是说必须确保在每一个构造器执行之后，
+这个域的值被设置。
+final用在类前面，说明这个类不能被继承。final用在类中的方法前，说明这个方法不能被子类覆盖。
+final double CM_PER_INCH = 2.54;
+public static final double CM_PER_INCH = 2.54;
+将域定义为static，每个类中只有一个这样的域，每一个对象对于所有的实例域却都有自己的一份拷贝。 
+
+声明数组
+int[] a; //没有将a初始化为一个真正的数组。应该用new运算符创建数组。
+int[] a  = new int[100];
+int[] smallPrimes = {2,3,5,7,11,13};   创建数组对象并同时赋予初始值。
+
+for each 循环
+for(variable : collection) statement;
+
+封装：
+不过是将数据和行为组合在一个包中，并对对象的使用者隐藏了数据的实现。
+要使用OOP一定要清楚对象的三个主要特性：
+对象的行为：可以对对象施加哪些操作或哪些方法？
+对象的状态：当施加那些方法时，对象如何相应。
+对象标识：如何辨别具有相同行为与状态的不同对象？
+
+类的关系：常见的有：
+依赖 uses-a
+聚合（关联） has-a
+继承 is-a 规则的另一种表述是置换法则，它表明程序中出现超类对象的地方都可用子类对象置换。
+
+对象与对象变量之间有重要的区别，如
+Date deadline  定义了一个对象变量 deadline，它可以引用Date类型的对象。要使用必须初始化变量deadline。
+deadline = new Date();
+一个对象变量如 deadline  并没有实际包含一个对象，而仅仅引用一个对象。new操作符的返回值也是一个引用。 
+
+一个方法可以访问所属类的所有对象的私有数据。
+不能在静态方法中访问实例域。但是静态方法可以访问自身类中的静态域。
+
+使用super调用超类的构造器的语句必须是子类构造器的第一条语句。如果子类的构造器没有显示的调用超类的
+构造器，则将自动的调用超类默认的构造器。super关键字有两个用途，一是调用超类的方法，二是调用超类的
+构造器。
+
+可以定义一个抽象类的对象变量，但是它只能引用非抽象子类的对象。
+
+接口中的所有方法自动属于public，因此可在声明时不提供关键字public。但实现接口的类的方法必须声明为
+public。 在接口中可以定义常量，常量将被自动设为public static final 。接口绝不能还有实例域，也不能
+在接口中实现方法。有些接口只定义了常量而没有定义方法。
+
+集合中的视图对象（视图概念）
+List<String> nlist = Collections.nCopies(3,"A");
+这个返回的list并不是传统的集合对象，而是视图对象，它实现了List接口，不需要付出建立数据结构的开销，
+包括Collections.singleton("a")等方法都返回的是视图，而不是集合类。视图对象可以说是具有限制的集合
+对象。这里的集合nlist具有访问数组元素set，get的方法。但是如果调用改变数组的方法就会抛出异常。
+
+用户期望在出错时，程序能采用一些理智的行为（如返回安全状态并能执行一些其他命令，保存所有操作结果），
+做到这些并不容易，其原因是检测（或引发）错误条件的代码通常离那些让数据恢复到安全状态或保存用户的
+操作并正常退出程序的代码很远。异常处理的任务就是将控制权从错误产生的地方转移给能够处理这种情况的错误
+处理器。
+如果某个方法不能采用正常的途径完成它的任务，就可通过另一个路径退出，在这种情况下，方法不返回任何值，
+而是抛出一个封装了错误信息的对象（异常）。调用这个方法的代码也将无法继续执行，而是异常处理机制开始搜索
+能够处理这种异常状况的异常处理器。异常具有自己的语法和特定的继承结构。异常对象都是派生与Throwable类的
+一个实例，下面是Error和Exception（下面是RuntimeException（程序错误导致的异常）和IOException（其它异
+常））。Java语言规范将派生与Error类和RuntimeException类的所有异常称为未检查异常，所有其他的异常称为
+已检查异常。如果遇到无法处理的情况，java的方法可以抛出一个异常。方法应该在其首部声明所有可能抛出的异常。
+public FileInputStream(String name) throws FileNotFoundException 这个声明表示这个构造器将根据给定的
+字符参数产生一个FileInputStream对象，但也有可能抛出一个FileNotFoundException 异常。编写自己的方法时，
+不必将所有可能抛出的异常都进行声明，至于什么时候需要在方法中用throws子句声明异常，什么异常必须声明，需
+要记住在遇到下面4种情况时应该抛出异常：
+1，调用一个抛出已检查异常的方法，如FileInputStream构造器。
+2，程序运行过程中发现错误，并且利用throw语句抛出一个已检查异常。
+3，程序出现错误，如a[-1] = 0;
+4，Java虚拟机和运行时库出现的内部错误。
+不应声明从RuntimeException继承的那些未检查异常。
+void drawImage(int i) throws ArrayIndexOutOfBoundsException    // bad sytel !!!
+总值一个方法必须声明所有可能抛出的已检查异常（一般是IOException），否则编译器会报错。而未检查异常要么
+不可控制（Error），要么就应该避免发生。
+
+抛出已存在的异常：
+1，找到一个合适的异常类。
+2，创建这个类的一个对象。
+3，将对象抛出。
+String readData(Scanner in) throws EOFException{
+   ...
+   while(...){
+   if(!in.hasNext()){
+	if(n<len)　throw new EOFException();
+     }
+    }
+}
+ 
+
+捕获异常
+要想捕获一个异常，必须设置try/catch语句块。处理异常一般有两种方式，1在方法声明中抛出去，不处理。2自己
+捕获异常，在try/catch语句中自己处理。哪种方法更好呢？通常应该捕获那些知道如何处理的异常，而将那些不知
+道怎样处理的异常继续进行传递。如果想传递一个异常，就必须在方法首部添加一个throws说明符告知调用者这个
+方法可能会抛出异常。
+finaly子句：不论是否有异常存在，总会执行。一般用在释放资源的地方。
+
+异常会导致程序效率降低，使用异常的技巧：
+1，基本规则：只在异常情况下使用异常机制。
+2，不要过分地细化异常。
+3，利用异常层次结构。不要只抛出RuntimeException异常。应该找更适当的子类或创建自己的异常类。
+4，不要压制异常。
+5，在检测错误时，苛刻要比放任更好。
+6，不要羞于传递异常。
+
+断言：
+断言机制允许在测试期间向代码中插入一些检查语句，当代码发布时，这些插入的检测语句将会被自动地移走。
+两种形式： assert 条件;  和   assert 条件:表达式; 如果结果为false，则抛出一个AssertionError异常。
+启用禁用断言：在运行程序时用-enableassertions 或 -ea 选项启用断言。-disableassertions或-da禁用。
+java -enableassertions   MyApp
+
+
+IO 流
+流的分类可用两种方式：1，节点流、处理流。 2，字节流、字符流。
+主要有以下几个抽象类：
+1:字节流 InputStream(FileInputStream,FilterInputStream(DataInputStream,BufferdInputStream
+                    PushBackInputStream,LineNumberInputStream),PipedInputStream,ObjectInputStream
+                    ByteArrayInputStream,StringBufferInputStream,SequenceInputStream)
+
+2:字节流 OutputStream(FileOutputStream,FilterOutputStream(DataOutputStream,BufferdOutputStream
+                     PrintStream),PipedOutputStream,ObjectOutputStream,ByteArrayOutputStream)
+  以上字节流有read,writer,readInt,WriterInt,readFloat,WriterFloat等方法。
+
+3:字符流 Reader(BufferedReader(LineNumberReader),CharArrayReader,InputStreamReader(FileReader),
+                FilterReader(PushBackReader),PipeReader,StringReader)
+
+4:字符流 Writer(BufferedWriter,CharArrayWriter,OutputStreamWriter(FileWriter),FilterWriter,
+               PipedWriter,StringWriter,FilterWriter)
+5:文件  File (FilerReader,FileWriter, FileInputStream,FileOutputStream)
+6:路径  Path   java.nio.file.Path java7中引入，被认为是java.io.File的替代品，它提供更复杂的功能。
+
+节点流
+File         : FilerReader,FileWriter, FileInputStream,FileOutputStream
+Memory Array : CharArrayReader,CharArrayWriter,ByteArrayInputStream,ByteArrayOutputStream
+Memory String: StringReader,StringWriter
+Pipe         : PipedReader,PipedWriter,PipedInputStream, PipedOutputStream
+
+处理流
+Buffering : BufferReader,BufferWriter,BufferedInputStream,BufferedOutputStream
+Filtering : FilterReader,FilterWriter,FilterInputStream,FilterOutputStream
+Printing  : PrintWriter, PrintStream
+Object Serialization : ObjectInputStream,ObjectOutputStream
+
+System.exit(0) 参数0通常被JVM理解为程序已成功终止。
+
+InputStream 常用方法：read(),read(byte[] b),read(byte[] b, int off, int len),available(),
+                      skip(),close(); read()返回-1就表明已经到达文件结尾。
+OutputStream常用方法：write(int b),writer(byte[] b),writer(byte[] b,int off,int len),flush()
+         
+处理二进制数据如图像，声音，视频配置文件等使用字节流处理，其他使用字符流处理。使用字符流可以很容易
+进行国际化，且他们使用了内部缓存，比字节流更高效。
+
+
+《JAVA开发超级工具集》
+Maven
+maven是使用声明式方法和标准目录结构，描述项目结构和内容的项目构建管理工具(“项目管理框架”)。
+包括编译、构建、测试和打包部署。
+
+一：Maven安装
+linux:
+cd /usr/local
+tar xvfz maven-2.0.7-bin.tar.gz
+ls
+ln -s maven-2.0.7 maven
+ls -la
+
+在~/.bashrc 或 /etc/bashrc中加入环境变量
+PATH=$PATH:/usr/local/maven/bin
+JAVA_HOME=/usr/lib/jvm/java
+export PATH JAVA_HOME
+测试是否安装：
+mvn --version
+
+windows:
+c:> jar -xf maven-2.0.4-bin.zip
+设置JAVA_HOME环境变量
+设置PATH环境变量，添加/maven/bin
+M2_ HOME, 编辑path  添加%M2_HOME%\bin
+
+二：Maven项目对象模型
+Maven项目的核心POM描述了项目、项目结构及其依赖。pom.xml，它存储在项目主目录中。依赖管理，项目版本、打包信息，lib程序库等的管理都存在此文件中。
+
+构建文件：
+mvn compile
+mvn test
+打包生成jar文件
+mvn package
+
+在pom.xml文件中可进行如下配置
+项目上下文和构件
+用户可读的项目描述
+声明持续集成服务器
+定义开发团队
+管理依赖
+定制构建过程
+设置报告
+定义构建配置
+
+Maven目录结构
+项目主目录中有一个POM文件和两个子目录：src存放所有源代码，target存放生成的构件。
+src/main/java       java源代码
+src/main/resources  应用程序需要的其他资源
+src/main/filters    属性文件形式的资源过滤器
+src/main/config     配置文件
+src/main/webapp     war项目的web应用程序目录
+src/test/java       单元测试的源代码，该目录是源代码主目录中的目录的镜像
+src/test/resources  用于单元测试的资源，它们不会被部署
+src/test/filters    用于单元测试的资源过滤，它们不会被部署
+src/site            用于生成maven项目的网站的文件
+
+根据环境配置Maven
+定义特定环境的配置细节是maven的settings.xml文件，存放在$HOme/.m2目录中。
+
+Maven是一个强大的构建工具，能够帮我们自动化构建过程，从清理、变异、测试到生成报告，再到
+打包和部署。我们要做的事使用Maven配置好项目，然后输入简单的命令(如 mvn clean install)。
+它还是一个依赖管理工具和项目信息管理工具。它提供了中央仓库，能帮助自动下载构件。它通过一个
+坐标系统准确地定位每一个构件(artifact)。也就是通过一组坐标maven能找到任何一个java类库。它
+给这个类库世界引入了经纬。
+
+
+项目管理利器-maven  视频(imooc)
+
+maven  常用命令
+      mvn  -v  查看maven版本
+              compile   编译
+              test         测试
+              package  打包
+              clean       删除target
+              install      安装jar包到本地仓库中
+ 
+              创建目录的两种方式：
+              1.  archetype:generate   按照提示进行选择
+              2.  archetype:generate  -DgroupID=组织名，公司网址的反写+项目名
+                                                  -DartifactId=项目名-模块名 (项目/产品唯一标识符)
+                                                  -Dversion=版本号
+                                                  -Dpackage=代码所在的包名
+
+坐标
+     groupID   组织名，公司网址的反写+项目名
+     artifactId  项目名-模块名
+     version     版本号
+     packaging  包(可省，默认jar)
+仓库
+     本地仓库和远程仓库
+     镜像仓库
+     仓库地址配置  <localRepository>D:/App/DevelopEnv/MavenRepository3.3.9</localRepository>
+
+Maven使用流程
+
+1、下载安装，注意配置环境变量
+2、修改配置文件： conf下将setting.xml  拷贝到 %HOME%\.m2下后修改
+     a  <localRepository>
+     b  <mirrors> 下的 <mirror>
+3、Eclipse 集成maven      
+     下载eclipse(kepler 自带m2e插件) 
+      配置eclipse  preference-maven- installations 添加安装路径 ， user settings 确保配置文件是上述settings
+
+
+SVN
+安装svn
+$ wget http://subversion.tigris.org/downloads/subversion-1.4.5.tar.gz
+$ tar xvfz subversion-1.4.5.tar.gz
+$ cd subversion-1.4.5
+$ ./configure --prefix=/usr/local --enable-so --enable-rewrite --with-susexec \
+--enable-mods-shared=all --with-apr=/usr/local/apache2  \
+--with-apr-util=/usr/local/apache2 --with-swig
+$ make
+$ make swig-py
+$ sudo make install
+$ sudo make install-swig-py
+
+设置subersion仓库
+svnadmin create /path/to/repos    设置FSFS仓库
+svnadmin create --fs-type bdb /path/to/repos   将berkeley db指定为后台文件系统
+$svnadmin create /data/svn/dev-repos
+c:\> svnadmin create c:\data\svn\dev-repos
+
+一般目录结构
+ls /data/svn/dev-repos
+conf/ dav/ db/ format/  hooks/  locks/  readme.txt
+conf 包含仓库配置文件。
+dav  供Apache和mod_dav_svn使用。
+db   是存储真正仓库的位置。
+format 此目录中有个文件，包含仓库布局的版本号。
+hooks 用于存放钩子脚本。
+推荐的目录接哦古是在项目根目录中创建三个子目录：
+trunk/ tags/ branches/
+trunk 存放主要开发工作。
+tags/ 包含项目仓库的快照。
+branches/ 包含从开发主干分支出来的命名分支。
+
+创建新subversion项目的简单方式是在一个临时目录中创建空目录结构，然后使用svn import命名将
+此目录结构导入到subversion仓库。
+$ pwd
+/home/john
+$ mkdir svn-tmp
+$ cd svn-tmp
+$ mkdir myproject
+$ mkdir myproject/trunk
+$ mkdir myproject/branches
+$ mkdir myproject/tags
+$ svn import . file:///data/svn/dev-repos -m  "Initial repository structure" 
+
+在subversion仓库中创建项目后，需要获得项目的一个工作副本。需要使用svn checkout命令获得副本。
+首先在本地选择或创建一个工作目录
+$ mkdir ~/projects
+$ svn checkout file:///data/svn/dev-repos/myproject/trunk myproject 
+将在当前目录创建myproject目录并包含相关内容。
+
+将现有文件导入到subversion
+$ svn import newproject file:///data/svn/dev-repos/newproject/trunk -m "Initaial import"
+$ svn list file:///data/svn/dev-repos/javalamp
+$ svn mkdir file:///data/svn/dev-repos/javalamp/branches -m "added branches"
+
+svn仓库的URL
+可以支持多种url协议
+file:///    http://   https://   svn://  svn+ssh://
+
+使用文件
+更新工作目录  在开始工作之前，首先要用其他开发人员的更改来更新自己的本地文件，更新操作：
+svn update
+如果进行了结构性修改(添加、移动或删除了文件或目录)，subversion需要知道这点，使用下列命令告诉
+subversion在下一次提交过程中执行实际操作。
+svn add
+svn copy
+svn delete
+svn move  如 svn move resources/ dist
+svn diff  比较修改
+svn revert 找回原来的版本
+svn log   获取简短的历史记录 -v获取详细的
+
+提交工作：
+先用命令  svn status 检查要发送到服务器上的内容。
+提交工作  svn commit -m "Added installation instructions "
+一旦提交更改，最好从subversion中更新自己的文件夹。
+
+解决冲突：
+查看版本 ls 
+svn resolved install.txt   将删除临时文件并使此文件能够再次提交。
+
+对二进制文件使用文件锁定
+开发过程有两种方式处理同时修改的文件:使用文件锁定，使用文件合并。subversion默认使用后者。
+$ svn lock images/product-logo.gif 'product-logo.gif' locked by user 'taronga'
+$ svn info images/product-logo.gif 获取更多信息。
+其他人用svn -u status 命令查看状态时会看到 O标记，表示已经被锁定。
+$ svn unlock images/product-logo.gif  释放文件而无需提交。
+打破和窃取锁定(管理员操作)
+第一步：确认谁锁定了哪些文件
+svnadmin lslocks /data/svn/dev-repos
+删除不必要的锁定
+svnadmin rmlocks /data/svn/dev-repos  /trunk/images/product-logo.gif
+窃取锁定
+svn unlock file:///data/svn/java-power-tools/trunk/images/product-logo.gif
+使用--force选项，可以解除任何锁定
+svn unlock --force file:///data/svn/java-power-tools/trunk/images/product-logo.gif
+
+备份和还原subversion仓库
+$ svnadmin dump /data/svn/dev-repos > svn-backup
+$ svnadmin dump /data/svn/dev-repos |　gzip -9 > svn-bakcup.gz   压缩备份
+重构仓库
+$ svnadmin create /data/svn/dev-repos svn-backup
+$ svnadmin load /data/svn/dev-repos <
+$ gunzip -c svn-backup.gz | svnadmin load /data/svn/dev-repos
+
+
+Java8 实战
+java8改变的核心内容: Lambda表达式  流stream  函数式编程  并行处理
+流处理：能够并行运行。 
+行为参数化：是可以帮助处理频繁变更的需求的一种软件开发模式。是一种开发模式！类似于策略模式。
+并行编程:不能访问共享的可变数据。这些函数有时被称为“纯函数”或“无副作用函数、无状态函数”。
+没有共享的可变数据，将方法和函数即代码传递给其他方法的能力是函数式编程范式的基石。
+函数一词通常是指方法，尤其是静态方法。
+方法引用语法  ::
+File[] hiddenFiles = new File(".").listFiles(File::isHidden);
+
+Lambda表达式
+可以把它理解为简洁地表示可以传递的匿名函数的一种方式：它没有名称，但它又参数列表、函数主题、返回类型，可能还有一个可以抛出的异常列表。
+
+
+Java流
+流允许你以声明性方式处理数据集合(通过查询语句来表达，而不是临时编写一个实现)。流还可以透明地并行处理。
+声明性方式：说明想要完成什么而不是说明如何实现。这种方式加上行为参数化能轻松应对变化的需求。
+常用的高层次构件：filter、sorted、 map、reduce、find、match、 collect。
+java的stream API可以让你写出声明性，可复合可并行的程序。常用流操作模式：筛选、切片、查找、匹配、映射和规约。Java8的集合支持一个新的stream方法，它会返回一个流。也可从数值范围或IO资源生成流元素。流：从支持数据处理操作的源生成的元素序列。集合讲的是数据，流讲的是计算。流的数据处理功能类似于数据库的操作，以及函数式编程语言中的常用操作。流操作有两个特点:流水线，内部迭代，且只能遍历一次。
+
+流操作有中间操作和终端操作 
+中间操作会返回另一个流：如筛选，截短流，跳过元素，映射，扁平化，filter，limit，skip，map，
+flatMap，sorted，distinct。
+终端操作如：forEach，count，collect。
+查找与匹配：allMatch，anyMatch，noneMatch，findFirst，findAny。
+规约：将流中的元素反复结合起来，被称为规约。用函数式编程语言说教折叠。
+
+构建流
+可以从值序列、数组、文件甚至由生成函数构建流。
+Stream<String> str = Stream.of("Java 8","Lambda","In","Action");
+str.map(String::toUpcase).forEach(System.out::println);
+
+int[] num={1,2,5,6,13,12};
+int sum=Arrays.stream(num).sum();
+
+try(Stream<String> lines=Files.lines(Paths.get("data.txt"),Charset.defaultCharset())){
+uniqueWords =lines.flatMap(line -> Arrays.stream(line.split(" "))).distinct().count();}
+catch(IOException e){
+}
+
+Stream.iterate(0, n->n+2).limit(10).forEach(System.out::println);
+Stream.generate(Math::random).limit(5).forEach(System.out::println);
+
+Collector 是接口， Collectors 是类， Collect是终端操作方法，Collection是集合接口，Collections是Collection对象的辅助类。
+Collectors类的静态工厂方法
+toList,toSet,toCollection,counting,summingInt,averagingInt,summarizingInt,joining,maxBy,
+minBy,reducing,collectingAndThen,groupingBy,partitioningBy
+
+
+《Spring in Action》第四版
+Spring需要学习核心内容
+1：DI 依赖注入
+2：AOP 面向切面的编程
+3：模板技术
+4：Spring容器
+
+为了降低java开发的复杂性，spring采取了以下4种关键策略：
+1：基于pojo的轻量级和最小入侵性编程。
+2：通过依赖注入和面向接口实现松耦合。
+3：基于切面和惯例进行声明式编程。
+4：通过切面和模板减少样板式代码。
+
+DI能让相互协作的软件组件保持松耦合。
+AOP允许把遍布应用各处的功能分离出来形成可重用的组件。
+
+依赖注入的方式：
+1：构造器注入。
+2：通过属性注入。即setter方式注入。
+
+创建组件之间协作的行为通常称为装配。spring有多种装配bean的方式：
+1：采用xml配置。
+2：在java中进行显式配置。创建JavaConfig类为其添加@Configuration注解  
+3：隐式的bean发现机制和自动装配(使用@Autowired注解的方式)。尽可能用这种！
+
+Spring通过应用上下文装载bean的定义并把它们组装起来。
+
+AOP面向切面的编程往往被定义为促使软件系统实现关注点的分离一项技术。诸如日志、事务管理
+和安全性这样的系统服务通常被称为横切关注点，它们会跨越系统的多个组件。
+AOP能使服务模块化，并以声明的方式将它们应用到它们需要影响的组件中去。这是一个非常强大
+的理念，可以将安全、事务和日志关注点与核心业务逻辑相分离。要将一个类抽象为一个切面，
+所需做的事情就是在一个spring配置文件中声明它。
+
+切面声明需要声明：
+1：切点。表达式语法用AspectJ的切点表达式语言。
+2：通知方式。
+
+通过少量的xml配置，就可以把一个类声明为一个spring切面。注意：必须首先把这个
+类声明为一个Spring bean。
+ 
+
+容器是Spring框架的核心。spring容器使用DI管理构成应用的组件，它会创建相互协作
+的组件之前的关联。spring自带了多个容器实现，可以归为两种不同的类型。bean工厂
+是最简单的容器，提供基本的DI支持。应用上下文基于BeanFactory构建，并提供应用
+框架级别的服务。常用应用上下文。
+1：指定加载spring应用上下文所需的xml文件。
+2：调用上下文的getBean()方法从spring容器中获取bean。
+
+创建应用对象之间协作关系的行为通常称为装配，这也是依赖注入(DI)的本质。DI是spring
+的最基本要素。
+
+Spring从两个角度来实现自动化装配：
+组件扫描：spring会自动发现应用上下文中所创建的bean。
+自动装配：spring自动满足bean之间的依赖。
+
+Spring缓存技术
+使用切面，对需要使用缓存的地方使用注解标注后，系统会自动应用缓存功能。
+
+Spring数据持久化
+有针对关系型和非关系型数据库。
+
+
+Spring Boot 2.0深度实践-初遇Spring Boot
+postman
+
+
+
+
+完全学会Git的24课堂
+1、初始化文档库
+cd /d/exergit/
+git init
+
+2、配置相关信息
+git config -l
+git config --lis      ---查看所有配置
+git config --system -l
+git config  --global -l
+git config user.name 'yipeng'
+git config user.email 'yipengchen1@163.com'
+git config --system user.name 'yipeng'
+git config --unsert user.name
+git config alias.con 'config -l'   表示config -l 的别名是con
+git config --global core.editor notepad   
+
+--global 表示home directory中的.gitconfig配置文件
+--system 表示git程序文件夹中的etc\config配置文件
+不带参数表示当前工作目录中的配置文件
+
+3、提交文件
+git add 1.txt
+git status  --- 查看状态
+git commit -m '描述、说明信息'  --author='操作者名  <Email邮箱>'
+git commit --amend  -m '新的描述'    ---commit指令后修改描述
+
+git add .     ---有个点！  会把新增的文件和被修改的文件加入Git 索引，被删除的文件不会记录在Git中。 
+git add -u   把被修改的文件和被删除的文件加入Git索引。
+git add -A  把新增的文件、被修改的文件以及被删除的文件全部加入Git索引。
+
+4、图形界面
+gitk
+gitk all
+
+5、建立分支
+git branch  分支名  
+git checkout 分支名    --- 切换分支
+git checkout -b newbranchname     --创建一个新分支并切换到新分支
+
+合并新分支后并删除新分支
+git checkout dev
+git merge --no-ff newbranchname
+git branch -d newbranchname
+
+强制删除新分支
+git checkout dev
+git branch -D newbranchname
+
+排除不需要加入的文档库
+touch .gitignore
+在其中加入
+.gitignore
+folder
+
+
+
+
+网上学习
+
+安装
+安装完后设置用户及邮箱
+git config --global user.name 'yipeng'
+git config --global user.email 'yipengchen1@163.com'
+
+创建版本库
+mkdir learngit
+cd learngit
+pwd
+git init
+ls -ah
+
+文件添加到版本库(提交新文件)
+git add 1.txt
+git commit -m 'shuoming xinxi'
+
+查看状态
+git status
+
+查看文件变化
+git diff 1.txt   
+
+查看历史记录
+git log
+
+回退
+HEAD表示当前版本，上一个版本HEAD^ 上上一个版本HEAD^^
+上4个版本HEAD~4
+git reset --hard HEAD^    ---- 回退到上一个版本 
+
+回退后反悔，又回到之前没有回退时
+git reset --hard 58abdbe    --(58abdbe 之前的版本号)
+git reflog用来记录你的每一次命令，可以找到版本号
+
+总结：
+HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，
+使用命令git reset --hard commit_id。
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+Git的版本库里存了很多东西，其中最重要的就是称为（或者叫index）的暂存区
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+用git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
+
+git checkout -- file    可以丢弃工作区的修改：
+git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令
+用命令git reset HEAD <file>可以把暂存区的修改撤销掉（unstage），重新放回工作区
+git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+
+文件回退总结：
+库文件回退：    git reset  --hard 58abdbe    --(58abdbe 之前的版本号)   --- 可先查看需要退回的版本  git reflog filename
+暂存区回退：    git reset head filename
+工作区回退：    git checkout filename
+
+删除文件
+实际删除文件： rm 3.txt
+版本库中再做删除操作
+git rm 3.txt
+git commit -m 'shuoming'
+
+把误删除的找回
+git checkout -- 3.txt
+
+如果也从版本库中删除了，需要找回
+git reset --hard HEAD^
+
+***********************************远程库操作************************
+远程库操作
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+用命令git clone克隆一个本地库
+git clone git@github.com:kevinyp/ypgit2
+
+创建分支
+git checkout -b branch1    
+git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+git branch branch1
+git checkout branch1
+
+用git branch命令查看当前分支：
+
+git merge命令用于合并指定分支到当前分支  
+把dev分支的工作成果合并到master分支上：
+git merge dev
+
+rebase 和merge一样可以合并文件，不过它会消除分支
+git checkout dev
+git rebase master  --- dev原来的分支节点消失，从master新的节点长出分支，最终只存在
+一条主线。 
+
+删除dev分支
+git branch -d dev
+
+小结
+Git鼓励大量使用分支：
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+
+
+git status也可以告诉我们冲突的文件：
+Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容
+当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，再提交。
+用git log --graph命令可以看到分支合并图。
+用git log看看分支历史
+
+合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+准备合并dev分支，请注意--no-ff参数，表示禁用Fast forward
+git merge --no-ff -m 'merge with no-ff' dev
+
+分支策略
+在实际开发中，我们应该按照几个基本原则进行分支管理：
+首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
+那在哪干活呢？干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；
+你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了
+
+Git分支十分强大，在团队开发中应该充分应用。
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，
+而fast forward合并就看不出来曾经做过合并。
+
+Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+用git stash list命令查看“储藏”的工作现场。
+需要恢复一下，有两个办法：
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+
+可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+git stash apply stash@{0}
+
+如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+
+查看远程分支
+用git remote -v显示更详细的信息 ,  或者  git remote  
+
+推送分支
+git push origin master
+git push origin dev
+
+使用强制push的方法：
+$ git push -u origin master -f 
+
+我们可以删除已有的GitHub远程库：
+git remote rm origin
+
+让Git显示颜色，会让命令输出看起来更醒目
+git config --global color.ui true
+
+设置别名
+$ git config --global alias.st status
+$ git config --global alias.co checkout
+$ git config --global alias.ci commit
+$ git config --global alias.br branch
+
+github上的文件和本地不一致的解决方法：  我的步骤通常是这样
+git push    如果失败的话，说明网络上的版本已经更改过了，那就
+git pull     如果失败的话，说明网络的版本和本地的版本在合并时可能产生冲突，那就
+git stash(把本地的修改全部缓存起来)    然后再   git pull
+然后再   git stash pop(把缓存起来的修改恢复)
+然后如果有冲突解决冲突，没有就   git push
+
+在github上只能删除仓库,却无法删除文件夹或文件, 所以只能通过命令来解决
+首先进入你的master文件夹下, Git Bash Here ,打开命令窗口
+$ git --help                                      # 帮助命令
+$ git pull origin master                    # 将远程仓库里面的项目拉下来
+$ dir                                                # 查看有哪些文件夹
+$ git rm -r --cached target              # 删除target文件夹
+$ git commit -m '删除了target'        # 提交,添加操作说明
+$ git push -u origin master               # 将本次更改更新到github项目上去
+
+
+windows 下git服务器安装(Gitblit)
+
+1、下载Gitblit，下载地址：http://www.gitblit.com/
+2、解压缩下载的压缩包即可，无需安装。我的路径为E:\Program Files\gitblit-1.8.0
+3、配置gitblit的 defaults.properties
+    打开defaults.properties分别搜索替换以下信息(参数说明)：
+    server.httpPort = 8888    （http协议的端口 ，请改为自己的端口）
+    server.httpsPort = 8443  （https 协议的端口 ，请改为自己的端口）
+    server.httpBindInterface = localhost（http协议下服务器端访问的网址 ip，请改为自己的ip）
+    server.httpsBindInterface = localhost（https协议下服务器端访问的网址 ip，请改为自己的ip）
+    git.repositoriesFolder = ${baseFolder}/git （${baseFolder}/git是其默认目录，也可以替换为自己指定的文件目录）
+4、修改installService.cmd找到installService.cmd文件。用“记事本”打开。修改ARCH，32位系统：SET ARCH=x86；64位系 统：SET ARCH=amd64。添加CD为程序目录 SET CD=D:\Git\Gitblit-1.6.0(你的实际目录)。修改StartParams里的启动参数，给空就可以了。
+实际要用SET ARCH=x86   设为amd64服务会有问题！！！
+5、右键以管理员身份运行installService.cmd 。 
+6、在浏览器中打开http://localhost:8888/，成功登陆Gitblit服务器
+默认管理员账号密码是admin admin，可以使用默认账号密码登录，然后改密即可。
+
+浏览器访问远程库地址：  http://172.168.1.237:8888/repositories/TestGitblit
+
+git remote add origin http://admin@172.168.1.237:8888/r/TestGitblit.git   --建立远程库到本地库的关联
+git push -u origin master     --将本地文档推送到远程库
+
+
+
+《Git 学习指南》
+Git内容总结
+帮助：git commit -h    --查看commit命令的帮助
+一：常用操作
+A、查询信息类命令
+git status
+git log --显示提交历史
+git log -n 3
+git log --oneline   --仅显示一行
+git log --stat      --显示统计信息
+git log --graph
+git log --walk-reflog  mybranch  --显示分支本地历史记录
+git reflog
+git branch
+git branch -r --显示远程跟踪分支
+git remote -v
+git show
+git diff master origin2/master   --提取前科比较远程库和本地库
+git log --oneline master..origin2/master
+git tag -l
+git config -l --查看配置，可以查看别名
+git config --global --list
+git diff origin2/master master  --查看版本对比
+git diff Head -- filename  --查看工作区和版本库里最新版本的区别
+
+
+B、提交、提取文件类命令
+文件提交到本地库
+1、git add 1.txt
+   git add .
+2、git commit -m "commnet"     -- 好像单引号、双引号都可以
+   git commit -m '描述、说明信息'  --author='操作者名  <Email邮箱>'
+   git commit --amend  -m '新的描述'    ---commit指令后修改描述
+3、为当前版本指定标签
+   git tag release3.1 master -m 'relase version'
+
+文件提交到远程库
+1、git push -u  origin(远程库) master(本地库)    -- 把本地库的master分支同步到远程仓库。加上了 –u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+git push origin(远程库) master(本地库)
+git push release3.1
+
+push 命令只适合把文件传到不带工作区的共享版本库中(裸版本库)，建立裸版本库的方法是clone时
+用--bare选项,例如：
+git clone --bare /fist-steps  /first-steps-bare
+上传操作：git push /first-steps-bare master
+ 
+2、提取文件到本地工作区
+git fetch /first-steps-bare   --fetch:获取提交,会将其他库所有分支中尚未存在于本地库中的提交获取到。
+fetch是单向操作，提交只能从远程库传送到本地库，如果将本地库提交到远程库要用push命令。
+提取前科比较远程库和本地库
+git diff master origin2/master
+利用本地分支操作别处版本库：通过获取(fetch)操作来创建一个本地分支orig2tolocal。
+git fetch origin2 master:orig2tolocal
+获取最新文件到工作区/本地  pull = fetch + merge
+git pull  --会从默认版本库中提取回文件，也可用下述/first-steps-bare(源库名)指定任意版本库的路径。
+git pull /first-steps-bare master 
+git pull --rebase   --会将从远程库获取的版本合并到本地后并消除钻石链
+git pull origin2 master(源):orig2tolocal(目标) 
+
+push、与pull fetch的区别
+push 通常不会带来合并，且只对有相同分支名的才提交文件，只在快进模式下被允许，pull、fetch所选取的是所有分支，且会合并。
+
+
+C、恢复到指定版本命令
+git中，恢复文件到某一版本通常称为检出(checkout)操作。
+1、git checkout  1.txt
+2、git checkout releas3.1  获取通过标记提交的版本releas3.1 
+3、git checkout -m 版本号 文件/文件夹
+
+文件恢复(回退)总结：
+reset 重置暂存区
+git reset Head .  --重置暂存区为当前head版本  第二个参数为当前的目录或文件
+库文件回退：git reset  --hard 58abdbe    --(58abdbe 之前的版本号)   --- 可先查看需要退回的版本  git reflog filename
+git reset --hard HEAD  --hard参数确保暂存区和工作区所发生的全部修改都会被丢弃。Head表示当前分支必须
+是最后一个已关闭的提交。
+暂存区回退：    git reset head filename
+工作区回退：    git checkout filename
+
+
+D、分支类操作
+git branch                --查看分支
+git branch a-branch       --创建分支 为当前提交创建分支
+git checkout a-branch     --切换分支
+git checkout -b b-branch  --创建并切换分支
+git branch -d c-branch    --删除分支
+git merge b-branch        -- 合并branch_name 到当前分支  快进合并
+git merge --no-ff b-branch
+git merge b-branch --no-ff --no-commit  --防止快进操作，防止可能失败的测试而停止任何提交。
+git checkout --force b-branch
+git reset --hard 39ea21a   --重置分支指针到39ea21a 
+git push origin1 :b-branch   --删除远程库origin1中的分支b-branch！！！
+
+
+二：高级操作
+1、变基础操作
+假设目前在分支 a-branch 上
+git merge master
+git rebase master   --变基操作，指定要将活动分支上的最新版本纳入的分支为master
+如果有冲突，解决冲突后继续执行
+git rebase --continue  --也可执行abort skip等选项  
+git mergetool
+
+2、移植操作
+假设目前在分支 a-branch 上
+git rebase master --onto release1   --将原分支master上的活动分支(a-branch)的提交移植到release1上
+
+3、命令别名
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.pl  pull --rebase
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %C(bold blue)%s%Creset %Cgreen(%cr) <%an>%Creset' --abbrev-commit --date=relative"
+git config --global alias.lga "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %C(bold blue)%s%Creset %Cgreen(%cr) <%an>%Creset' --abbrev-commit --date=relative --author xujun"
+git config --global alias.last "log -1"
+
+git config 文件的存放位置主要有三个位置
+1）./etc/gitconfig 文件：包含了适用于系统所有用户和所有库的值。如果你传递参数选项’–system’ 给 git config，它将明确的读和写这个文件。
+git config --system user.name "xujun"  
+git config --system user.email “gdutxiaoxu@163.com"
+2）~/.gitconfig 文件 ：具体到你的用户。你可以通过传递 –global 选项使 Git 读或写这个特定的文件。
+git config --global user.name "xujun"  
+git config --global user.email “gdutxiaoxu@163.com"
+3) 位于 git 目录的 config 文件 (也就是 .git/config) ：无论你当前在用的库是什么，特定指向该单一的库。每个级别重写前一个级别的值。因此，在.git/config中的值覆盖了在/etc/gitconfig中的同一个值。
+
+
+
+
+
+
+SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+String aa = dateFormat.format(new java.util.Date());
+
+用Maven创建web项目
+https://www.cnblogs.com/leiOOlei/p/3361633.html
+1、创建Maven项目  不勾选  create a simple project
+2、选择 maven-archetype-webapp
+3、输入包名和项目名等信息。
+4、项目配置  修改文件加，增加  resources 、 java 等文件夹
+5、修改java build path 的source  输出路径
+6、设定jdk
+7、删除 Deployement Assembly中的test两项
+
+用Maven创建Spring3 MVC项目
+https://www.cnblogs.com/leiOOlei/p/3414612.html
+1、先如上创建web项目
+2、配置pom.xml 文件
+
+
+Shiro （Java安全框架）
+三个核心组件：Subject, SecurityManager 和 Realms.
+Subject：即“当前操作用户”。但是，在Shiro中，Subject这一概念并不仅仅指人，也可以是第三方进程、后台帐户（Daemon Account）或其他类似事物。它仅仅意味着“当前跟软件交互的东西”。但考虑到大多数目的和用途，你可以把它认为是Shiro的“用户”概念。 
+　　
+Subject代表了当前用户的安全操作，SecurityManager则管理所有用户的安全操作。 
+　　
+SecurityManager：它是Shiro框架的核心，典型的Facade模式，Shiro通过SecurityManager来管理内部组件实例，并通过它来提供安全管理的各种服务。 
+　Realm： Realm充当了Shiro与应用安全数据间的“桥梁”或者“连接器”。也就是说，当对用户执行认 当对用户执行认证（登录）和授权（访问控制）验证时，Shiro会从应用配置的Realm中查找用户及其权限信息。Realm：可以有1个或多个Realm，可以认为是安全实体数据源，即用于获取安全实体的；可以是JDBC实现，也可以是LDAP实现，或者内存实现等等；由用户提供；注意：Shiro不知道你的用户/权限存储在哪及以何种格式存储；所以我们一般在应用中都需要实现自己的Realm；
+
+Spring框架中使用shiro实现权限控制方法 
+1、首先确定自己的权限方案是：为用户分配角色，角色拥有某种权限。而且是用数据库存储用户信息，包括用户资料、角色、权限信息。
+2、在web.xml中定义shiro的过滤器
+3、spring-shiro.xml 
+这个文件会import到spring的核心配置文件中。有人叫applicationcontext.xml，有人叫spring-core.xml…spring-context-shiro.xml 反正web.xml里面写对了就能识别了。spring-core.xml里面记得配一个数据库连接池，druid、c3p0皆可。
+4、springmvc配置，让springmvc控制权限认证后的跳转。
+5、spring-cache.xml :  shiro的一些功能会用到缓存（比如remenber me），先配置好。 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
