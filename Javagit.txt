@@ -1694,8 +1694,7 @@ cd /d/exergit/
 git init
 
 2、配置相关信息
-git config -l
-git config --lis      ---查看所有配置
+git config -l          ---查看所有配置  --list
 git config --system -l
 git config  --global -l
 git config user.name 'yipeng'
@@ -1777,14 +1776,17 @@ git log
 HEAD表示当前版本，上一个版本HEAD^ 上上一个版本HEAD^^
 上4个版本HEAD~4
 git reset --hard HEAD^    ---- 回退到上一个版本 
+git reset --hard 2ada1e5  ---- 回退到 2ada1e5 这个版本  先用 git reflog 查看操作记录，然后可以选择相关版本
 
 回退后反悔，又回到之前没有回退时
 git reset --hard 58abdbe    --(58abdbe 之前的版本号)
 git reflog用来记录你的每一次命令，可以找到版本号
 
+
 总结：
 HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，
 使用命令git reset --hard commit_id。
+git reset <commit> 的意思就是 把HEAD移到<commit>
 穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
 要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
 
@@ -1967,9 +1969,9 @@ git log --oneline   --仅显示一行
 git log --stat      --显示统计信息
 git log --graph
 git log --walk-reflog  mybranch  --显示分支本地历史记录
-git reflog
-git branch
-git branch -r --显示远程跟踪分支
+git reflog   用来记录你的每一次命令，可以找到版本号
+git branch -r  --显示远程跟踪分支
+git branch -av   ---显示分支详细信息
 git remote -v
 git show
 git diff master origin2/master   --提取前科比较远程库和本地库
@@ -2047,14 +2049,22 @@ git checkout --force b-branch
 git reset --hard 39ea21a   --重置分支指针到39ea21a 
 git push origin1 :b-branch   --删除远程库origin1中的分支b-branch！！！
 git branch 不带参数：列出本地已经存在的分支，并且在当前分支的前面加“*”号标记，例如： 
-
 git branch -r 列出远程分支，例如： 
-
 git branch -a 列出本地分支和远程分支。 
-
 git branch branchname  创建分支 
-
 git checkout branchname 切换分支
+
+Git里面，git checkout命令用于切换分支或恢复工作树文件。git checkout是git最常用的命令之一，
+同时也是一个很危险的命令，因为这条命令会重写工作区。
+创建一个hotfix分支
+git checkout -b|-B <new_branch> [<start point>] 
+git checkout -b hotfix-1.2.1 master
+
+git checkout 26a2e80 # 26a2e80 是一个commit号，这个命令会把index区域和工作区域的内容都更新
+git checkout -- README # README是想恢复的文件名，恢复成index区域里面的内容，为什么要加“--”呢，这个是为了告诉Git，
+这是一个文件而不是一个分支
+Git checkout . # 从index区域恢复所有文件
+
 
 
 二：高级操作
