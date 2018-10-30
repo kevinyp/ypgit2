@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 tet tortoisegit
+=======
+this is test file 4
+aaaaaaaaaaaaaa
+bbbbbbbbb
+
+cccccccccccccc
+desfaskfjkj
+>>>>>>> ab445813722e50a753e6f7080c3eb6f71f986852

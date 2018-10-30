@@ -1,0 +1,20 @@
+git pull 失败 ,提示：fatal: refusing to merge unrelated histories
+这是因为远程仓库origin上的分支master和本地分支master被Git认为是不同的仓库，所以不能直接合并。
+
+参考http://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories。
+
+
+
+解决方案：添加--allow-unrelated-histories
+
+假如我们的远程仓库是origin，分支是master，那么我们 需要这样写git pull origin master ----allow-unrelated-histories
+ 
+
+push和pull命令格式：
+
+
+
+git push <远程主机名> <本地分支名>[:<远程分支名>]    
+git push oschina master， 省略远程分支名，代表推送到有追踪关系的远程分支（一般为同名）
+
+git pull <远程主机名> <远程分支>:<本地分支>       
