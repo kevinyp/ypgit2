@@ -2,3 +2,4 @@ asdfasdf
 asdfasd
 aaa
 
+add some lines to 3.txt
