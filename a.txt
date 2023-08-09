@@ -1,3 +1,0 @@
-test ignore file 
-add line to a.txt
-add line2 to a.txt
